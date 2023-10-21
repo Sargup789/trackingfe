@@ -78,7 +78,7 @@ const CheckoutForm: React.FC = () => {
                     fullWidth
                 />
             )}
-            {truckDetails && (
+            {/* {truckDetails && (
                 <Box mt={2} display="flex" flexDirection="column">
                     <Typography variant="h4">Truck Details:</Typography>
                     <br />
@@ -102,7 +102,7 @@ const CheckoutForm: React.FC = () => {
                     <Button type="submit" variant="contained" color="primary" style={{ marginTop: '15px' }} onClick={handleCheckout}>Confirm</Button>
                 </Box>
 
-            )}
+            )} */}
             {/* <Dialog open={showConfirmDialog} onClose={() => setShowConfirmDialog(false)}>
                 <DialogTitle>Confirm Checkout</DialogTitle>
                 <DialogContent>

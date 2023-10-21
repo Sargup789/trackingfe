@@ -2,13 +2,11 @@ import { TruckData } from "@/pages/trucks";
 import { HighlightOff } from "@mui/icons-material";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormLabel, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { Field, Form } from "react-final-form";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { useEffect, useState } from "react";
 import React from 'react';
 import { QrReader } from "react-qr-reader";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ClearIcon from '@mui/icons-material/Clear';
 import { Checklist } from "../types";
 import axios from "axios";
 
