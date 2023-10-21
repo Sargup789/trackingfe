@@ -101,7 +101,8 @@ const Trucks = () => {
           filtersState={filtersState}
           setFilterState={setFilterState}
           page={page}
-          size={size} />
+          size={size}
+        />
       )}
     </Layout>
   )
