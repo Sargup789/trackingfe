@@ -77,7 +77,7 @@ const AddTaskDialog: React.FC<TaskDialogProps> = ({
     data: trucks,
     isLoading,
     refetch,
-  }: UseQueryResult<TruckData[], unknown> = useQuery(["trucks", page, size, filtersState], () => fetchTrucks(page, size, filtersState), {
+  }: UseQueryResult<TruckData[], unknown> = useQuery(["trucks", page, size, filtersState], () => fetchTrucks(page, size), {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
