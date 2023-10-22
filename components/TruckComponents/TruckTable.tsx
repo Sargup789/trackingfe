@@ -1,13 +1,7 @@
 import { TruckData } from '@/pages/trucks';
 import { DeleteOutline, EditOutlined, RemoveRedEyeOutlined } from '@mui/icons-material';
-import { IconButton, Tooltip } from '@mui/material';
-import { DataGrid, GridColDef, GridCellParams } from '@mui/x-data-grid';
-import { useRouter } from 'next/router';
+import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 import * as React from 'react';
-import { useState } from 'react';
-import QRCode from 'react-qr-code';
-import PrintDialog from '../QRCodeComponents/PrintDialog';
-import moment from "moment";
 interface Props {
     truckData: TruckData[];
     deleteTruck: (id: string) => void;
@@ -23,135 +17,77 @@ interface Props {
 export default function Truck({
     truckData, deleteTruck, editTruck, setPage, setSize, page, size, viewTruck, onRowSelect
 }: Props) {
-    const [printDialogOpen, setPrintDialogOpen] = useState(false);
-    const [printCode, setPrintCode] = useState('');
 
-    const router = useRouter();
-    const isTaskPage = router.pathname.includes('task');
+    if (!truckData) return (<div></div>)
 
-    const handlePrint = (code: string) => {
-        setPrintCode(code);
-        setPrintDialogOpen(true);
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage + 1);  // +1 because backend pages are 1-indexed while material-ui's pagination is 0-indexed.
     };
 
-    const renderActionButton = (params: GridCellParams) => (
-        <>
-            <Tooltip title="View" followCursor>
-                <IconButton
-                    size="small"
-                    onClick={() => viewTruck(params.row as TruckData)}
-                    children={<RemoveRedEyeOutlined fontSize="small" />}
-                />
-            </Tooltip>
-            <Tooltip title="Edit" followCursor>
-                <IconButton
-                    size="small"
-                    onClick={() => editTruck(params.row as TruckData)}
-                    children={<EditOutlined fontSize="small" />}
-                />
-            </Tooltip>
-            <Tooltip title="Delete" followCursor>
-                <IconButton
-                    size="small"
-                    onClick={() => deleteTruck(params.row.id as string)}
-                    children={<DeleteOutline fontSize="small" />}
-                />
-            </Tooltip>
-        </>
-    );
-
-    const columns: GridColDef[] = [
-        // {
-        //     field: ' ',
-        //     headerName: 'Arrival Date',
-        //     width: 150,
-        //     sortable: true,
-        //     headerAlign: 'center',
-        //     valueGetter: (params) => moment(params.value as string, "DD-MM-YYYY").format("MMM DD, YYYY"),
-        // },
-        {
-            field: 'orderId',
-            headerName: 'Order ID',
-            width: 150,
-            align: 'center',
-            sortable: true,
-        },
-        {
-            field: 'vin',
-            headerName: 'VIN',
-            width: 150,
-            align: 'center',
-            sortable: true,
-
-        },
-        {
-            field: 'modelNumber',
-            headerName: 'Vehicle Model',
-            width: 150,
-
-            align: 'center',
-            sortable: true,
-        },
-        {
-            field: 'serialNumber',
-            headerName: 'Serial Number',
-            width: 150,
-
-            align: 'center',
-            sortable: true,
-        },
-        {
-            field: 'stockNumber',
-            headerName: 'Stock Number',
-            width: 150,
-
-            align: 'center',
-            sortable: true,
-        },
-        {
-            field: 'actions',
-            headerName: 'Actions',
-            width: 150,
-            sortable: false,
-            renderCell: renderActionButton,
-            headerAlign: 'center',
-        }
-    ];
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSize(+event.target.value);
+        setPage(1);  // reset to the first page whenever the rows per page size changes.
+    };
 
     return (
-        <div style={{ height: 450, width: '100%', backgroundColor: 'white' }}>
-            <DataGrid
-                rows={truckData}
-                columns={columns}
-                pageSize={size}
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Order ID</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>VIN</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Vehicle Model</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Serial Number</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Stock Number</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {truckData.map((row) => (
+                            <TableRow key={row.id}>
+                                <TableCell>{row.orderId}</TableCell>
+                                <TableCell align='center'>{row.vin}</TableCell>
+                                <TableCell align='center'>{row.modelNumber}</TableCell>
+                                <TableCell align='center'>{row.serialNumber}</TableCell>
+                                <TableCell align='center'>{row.stockNumber}</TableCell>
+                                <TableCell align='center'>
+                                    <Tooltip title="View" followCursor>
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => viewTruck(row as TruckData)}
+                                            children={<RemoveRedEyeOutlined fontSize="small" />}
+                                        />
+                                    </Tooltip>
+                                    <Tooltip title="Edit" followCursor>
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => editTruck(row as TruckData)}
+                                            children={<EditOutlined fontSize="small" />}
+                                        />
+                                    </Tooltip>
+                                    <Tooltip title="Delete" followCursor>
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => { deleteTruck(row.id) }}
+                                            children={<DeleteOutline fontSize="small" />}
+                                        />
+                                    </Tooltip>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
-                paginationMode="server"
-                rowCount={10}
+                component="div"
+                count={truckData.length}
+                rowsPerPage={size}
                 page={page - 1}
-                onPageChange={(val) => setPage(val + 1)}
-                onPageSizeChange={(val) => setSize(val)}
-                checkboxSelection={isTaskPage}
-                onSelectionModelChange={(ids: any) => {
-                    if (onRowSelect)
-                        onRowSelect(ids[0])
-                }}
-                sx={{
-                    '& .MuiDataGrid-cell': {
-                        textAlign: 'center',
-                        justifyContent: 'center',
-                        display: 'flex'
-                    },
-                    '& .MuiDataGrid-columnHeaderTitle': {
-                        fontWeight: '700'
-                    },
-                    '& .MuiDataGrid-columnHeaderTitleContainer': {
-                        justifyContent: 'center'
-                    }
-                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            {printDialogOpen && (
-                <PrintDialog open={printDialogOpen} handleClose={() => setPrintDialogOpen(false)} code={printCode} />
-            )}
-        </div>
+        </Paper>
     );
 }

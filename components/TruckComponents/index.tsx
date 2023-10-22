@@ -65,7 +65,7 @@ const TruckIndex = ({ truckData, deleteTruck, refetch, setPage, setSize, page, s
         } else {
             try {
                 const response = await axios.post(`/api/router?path=api/truck`, data);
-                toast.success("Successfully updated truck");
+                toast.success("Successfully created truck");
             } catch (error: any) {
                 const errmsg = error?.response?.data?.message;
                 toast.error(errmsg || "Something went wrong");

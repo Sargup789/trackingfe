@@ -58,7 +58,7 @@ const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage,
         } else {
             try {
                 const response = await axios.post(`/api/router?path=api/order`, data);
-                toast.success("Successfully updated order");
+                toast.success("Successfully created order");
             } catch (error: any) {
                 const errmsg = error?.response?.data?.message;
                 toast.error(errmsg || "Something went wrong");
