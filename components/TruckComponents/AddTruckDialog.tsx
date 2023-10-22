@@ -1,14 +1,12 @@
 import { TruckData } from "@/pages/trucks";
 import { HighlightOff } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormLabel, Grid, IconButton, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormLabel, Grid, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Field, Form } from "react-final-form";
 import { useEffect, useState } from "react";
 import React from 'react';
-import { QrReader } from "react-qr-reader";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checklist } from "../types";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 interface TruckDialogProps {
     open: boolean;
@@ -26,10 +24,8 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
     onSubmit,
 }) => {
     const isEditMode = Object.keys(truckDialogData).length > 0;
-    const [isScanning, setIsScanning] = useState(false);
-    const [scannedCode, setScannedCode] = useState<string | null>(null);
-    const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [checklists, setChecklists] = useState<Checklist[]>([]);
+    const [orderIds, setOrderIds] = useState([]);
 
     const formatDate = (date: Date) => {
         const day = String(date.getDate()).padStart(2, '0');
@@ -38,50 +34,37 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
         return `${day}-${month}-${year}`;
     };
 
-    // const handleOrdersDropDown = (selectedOrder: string) => {
-    //      setSelectedZone(selectedZone)
-    //     axios.get(`/api/router?path=api/order/all/ids`)
-    //         .then(res => setLocations(res.data))
-    //         .catch(() => toast.error('Error fetching locations.'));
-    // };
+    const fetchOrderIds = async () => {
+        try {
+            const response = await axios.get('/api/router?path=api/order/all/ids');
+            setOrderIds(response.data);
+        } catch (error) {
+            console.error('Error fetching order IDs:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchOrderIds();
+    }, []);
+
+
 
     const toSlugFormat = (str: string) => {
         return str.toLowerCase().replace(/\s+/g, '-');
     };
 
-    const handleScan = (result: any, error: any) => {
-        if (!!result) {
-            setScannedCode(result?.text);
-            setIsScanning(false);
-        }
-        if (!!error) {
-            console.info(error);
-        }
-    };
-
     const customHandleClose = () => {
         handleClose();
-        setIsScanning(false);
-        setScannedCode(null);
     };
 
     const customOnSubmit = (values: any) => {
-        values.qrCodeId = scannedCode || values.qrCodeId;
-        values.arrivalDate = formatDate(startDate!);
         values.checklist = checklists.map((item) => ({
             question: item.question,
             answer: values[`checklist_${toSlugFormat(item.question)}`],
             isActive: item.isActive
         }));
-        setScannedCode(null);
         onSubmit(values);
     };
-
-    useEffect(() => {
-        if (!open) {
-            setScannedCode(null);
-        }
-    }, [open]);
 
     const getAllChecklists = async () => {
         const response = await axios.get(`/api/router?path=api/checklist`);
@@ -100,20 +83,6 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
 
         fetchData();
     }, []);
-
-    // const transformTruckDataForForm = (truckData: TruckData | {}) => {
-    //     if (Object.keys(truckData).length === 0) return {}
-    //     const transformedData: any = { ...truckData };
-    //     if ((truckData as TruckData).checklist) {
-    //         (truckData as TruckData).checklist.forEach(item => {
-    //             if (item && item.question) {
-    //                 const slug = toSlugFormat(item.question);
-    //                 transformedData[`checklist_${slug}`] = item.answer;
-    //             }
-    //         });
-    //     }
-    //     return transformedData;
-    // };
 
     return (
         <Dialog maxWidth="lg" fullWidth open={open} onClose={customHandleClose}>
@@ -141,10 +110,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
             </DialogTitle>
             <DialogContent>
                 <Form
-                    // initialValues={{
-                    //     ...transformTruckDataForForm(truckDialogData),
-                    //     qrCodeId: scannedCode ? scannedCode : (isEditMode ? (truckDialogData as TruckData).qrCodeId : null)
-                    // }}
+
                     onSubmit={customOnSubmit}
                     render={({ handleSubmit, values }) => {
                         return <form onSubmit={handleSubmit}>
@@ -157,41 +123,25 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                     gap: 3,
                                 }}
                             >
-                                <Field name="qrCodeId">
+                                <Field name="orderId">
                                     {({ input }) => (
                                         <Box>
                                             <Typography className="label">Order ID</Typography>
-                                            {/* <TextField
-                                                {...input}
-                                                fullWidth
-                                                size="small"
-                                                disabled={isEditMode}
-                                                placeholder="Order ID"
-                                                value={scannedCode || input.value}
-                                            /> */}
+                                            <FormControl fullWidth>
+                                                <Select
+                                                    {...input}
+                                                    value={input.value}
+                                                >
+                                                    {orderIds.map((orderId) => (
+                                                        <MenuItem key={orderId} value={orderId}>
+                                                            {orderId}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
                                         </Box>
                                     )}
                                 </Field>
-                                {isScanning && <div>
-                                    <QrReader
-                                        onResult={handleScan}
-                                        constraints={{ facingMode: "environment" }}
-                                        //@ts-ignore
-                                        style={{ width: "40%", height: "40%" }}
-                                    />
-                                    <Button onClick={() => setIsScanning(false)}>Close Scanner</Button>
-                                </div>}
-                                {/* <Field name="arrivalDate">
-                                    {({ input }) => (
-                                        <Box>
-                                            <Typography className="label">Arrival Date</Typography>
-                                            <DatePicker className='date-component'
-                                                selected={startDate}
-                                                onChange={(date) => setStartDate(date as Date)}
-                                                dateFormat="dd-MM-yyyy" />
-                                        </Box>
-                                    )}
-                                </Field> */}
                                 <Field name="vin">
                                     {({ input }) => (
                                         <Box>
