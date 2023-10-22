@@ -1,14 +1,13 @@
-import CheckoutForm from '@/components/CheckoutTruck'
 import Layout from '@/components/general/Layout'
 import withLogin from '@/components/general/withLogin'
 import React from 'react'
 
 type Props = {}
 
-const checkout = (props: Props) => {
+const statusupdate = (props: Props) => {
   return (
-    <Layout><CheckoutForm /></Layout>
+    <Layout>Work in Progress...</Layout>
   )
 }
 
-export default withLogin(checkout)
+export default withLogin(statusupdate)

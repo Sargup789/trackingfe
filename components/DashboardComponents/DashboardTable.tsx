@@ -14,11 +14,12 @@ interface Props {
   dashboardData: OrderData[]
   setPage: (page: number) => void
   setSize: (size: number) => void
+  deleteOrder: (id: string) => void;
   page: number
   size: number
 }
 
-export default function DashboardTable({ dashboardData, setPage, setSize, page, size }: Props) {
+export default function DashboardTable({ dashboardData, deleteOrder, setPage, setSize, page, size }: Props) {
   if (!dashboardData) return (<div></div>)
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -57,7 +58,7 @@ export default function DashboardTable({ dashboardData, setPage, setSize, page, 
                   <Tooltip title="Delete" followCursor>
                     <IconButton
                       size="small"
-                      onClick={() => { }}
+                      onClick={() => { deleteOrder(orderRow.orderId) }}
                       children={<DeleteOutline fontSize="small" />}
                     />
                   </Tooltip>

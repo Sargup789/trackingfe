@@ -19,7 +19,7 @@ type Props = {
 };
 
 const queryClient = new QueryClient();
-const DashboardIndex = ({ dashboardData, refetch, setSize, setPage, page, size }: Props) => {
+const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage, page, size }: Props) => {
     const [addOrderDialogOpen, setAddOrderDialogOpen] = useState(false);
     const [orderDialogData, setOrderDialogData] = useState<OrderData | {}>({});
 
@@ -78,6 +78,7 @@ const DashboardIndex = ({ dashboardData, refetch, setSize, setPage, page, size }
                     dashboardData={dashboardData}
                     setPage={setPage}
                     setSize={setSize}
+                    deleteOrder={deleteOrder}
                     page={page}
                     size={size}
                 />
