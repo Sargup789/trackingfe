@@ -19,6 +19,7 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
     orderDialogData,
     onSubmit,
 }) => {
+    const isEditMode = Object.keys(orderDialogData).length > 0;
     return (
         <Dialog maxWidth="sm" fullWidth open={open} onClose={handleClose}>
             <DialogTitle
@@ -34,7 +35,7 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                         alignItems: "center",
                     }}
                 >
-                    Add Order
+                    {isEditMode ? "Edit" : "Add"} Order
                 </Box>
                 <IconButton
                     children={<HighlightOff />}
