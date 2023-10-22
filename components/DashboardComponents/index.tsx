@@ -22,19 +22,31 @@ const queryClient = new QueryClient();
 const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage, page, size }: Props) => {
     const [addOrderDialogOpen, setAddOrderDialogOpen] = useState(false);
     const [orderDialogData, setOrderDialogData] = useState<OrderData | {}>({});
+    const [isViewMode, setIsViewMode] = useState(false);
+
+    const viewOrder = (order: OrderData) => {
+        setOrderDialogData(order);
+        setAddOrderDialogOpen(true);
+        setIsViewMode(true);
+    }
+
+    const editOrder = (order: OrderData) => {
+        setOrderDialogData(order);
+        setAddOrderDialogOpen(true);
+    };
 
     const handleClose = () => {
         setAddOrderDialogOpen(false);
         setOrderDialogData({});
+        setIsViewMode(false);
     };
-
 
     const onSubmit = async (data: OrderData) => {
         if (Object.keys(orderDialogData).length > 0) {
-            const { id, ...rest } = data;
+            const { id, orderId, ...rest } = data;
             try {
                 const response = await axios.put(
-                    `/api/router?path=api/order/${id}`,
+                    `/api/router?path=api/order/${orderId}`,
                     rest
                 );
                 toast.success("Successfully updated order");
@@ -78,12 +90,15 @@ const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage,
                     dashboardData={dashboardData}
                     setPage={setPage}
                     setSize={setSize}
+                    editOrder={editOrder}
+                    viewOrder={viewOrder}
                     deleteOrder={deleteOrder}
                     page={page}
                     size={size}
                 />
                 <AddOrderDialog
                     open={addOrderDialogOpen}
+                    isViewMode={isViewMode}
                     orderDialogData={orderDialogData}
                     handleClose={handleClose}
                     onSubmit={onSubmit}

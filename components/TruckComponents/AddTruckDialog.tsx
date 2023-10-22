@@ -1,14 +1,14 @@
 import { TruckData } from "@/pages/trucks";
 import { HighlightOff } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormLabel, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormLabel, Grid, IconButton, TextField, Typography } from "@mui/material";
 import { Field, Form } from "react-final-form";
 import { useEffect, useState } from "react";
 import React from 'react';
 import { QrReader } from "react-qr-reader";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checklist } from "../types";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface TruckDialogProps {
     open: boolean;
@@ -37,6 +37,13 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
         const year = date.getFullYear();
         return `${day}-${month}-${year}`;
     };
+
+    // const handleOrdersDropDown = (selectedOrder: string) => {
+    //      setSelectedZone(selectedZone)
+    //     axios.get(`/api/router?path=api/order/all/ids`)
+    //         .then(res => setLocations(res.data))
+    //         .catch(() => toast.error('Error fetching locations.'));
+    // };
 
     const toSlugFormat = (str: string) => {
         return str.toLowerCase().replace(/\s+/g, '-');

@@ -7,12 +7,14 @@ import { Field, Form } from "react-final-form";
 
 interface UserDialogProps {
     open: boolean;
+    isViewMode: boolean;
     handleClose: () => void;
     orderDialogData: OrderData | {};
     onSubmit: (values: OrderData) => void;
 }
 const AddOrderDialog: React.FC<UserDialogProps> = ({
     open,
+    isViewMode,
     handleClose,
     orderDialogData,
     onSubmit,
@@ -136,7 +138,7 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                                 </Field>
                             </Box>
                             <DialogActions>
-                                <Button
+                                {!isViewMode && <Button
                                     style={{
                                         borderRadius: 15,
                                         backgroundColor: "#E96820",
@@ -146,7 +148,7 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                                     type="submit"
                                 >
                                     Save
-                                </Button>
+                                </Button>}
                             </DialogActions>
                         </form>
                     )}
