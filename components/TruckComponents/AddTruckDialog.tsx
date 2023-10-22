@@ -84,6 +84,20 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
         fetchData();
     }, []);
 
+    const transformTruckDataForForm = (truckData: TruckData | {}) => {
+        if (Object.keys(truckData).length === 0) return {}
+        const transformedData: any = { ...truckData };
+        if ((truckData as TruckData).checklist) {
+            (truckData as TruckData).checklist.forEach(item => {
+                if (item && item.question) {
+                    const slug = toSlugFormat(item.question);
+                    transformedData[`checklist_${slug}`] = item.answer;
+                }
+            });
+        }
+        return transformedData;
+    };
+
     return (
         <Dialog maxWidth="lg" fullWidth open={open} onClose={customHandleClose}>
             <DialogTitle
@@ -110,7 +124,9 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
             </DialogTitle>
             <DialogContent>
                 <Form
-
+                    initialValues={{
+                        ...transformTruckDataForForm(truckDialogData),
+                    }}
                     onSubmit={customOnSubmit}
                     render={({ handleSubmit, values }) => {
                         return <form onSubmit={handleSubmit}>
@@ -131,6 +147,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                                 <Select
                                                     {...input}
                                                     value={input.value}
+                                                    disabled={isEditMode}
                                                 >
                                                     {orderIds.map((orderId) => (
                                                         <MenuItem key={orderId} value={orderId}>

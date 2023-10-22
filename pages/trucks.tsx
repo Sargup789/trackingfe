@@ -2,7 +2,6 @@ import TruckIndex from "@/components/TruckComponents"
 import Layout from "@/components/general/Layout"
 import axios from "axios";
 import { UseQueryResult, useQuery } from "react-query";
-import { ZoneData } from "./zone";
 import React from "react";
 import withLogin from "@/components/general/withLogin";
 
@@ -25,7 +24,6 @@ export interface FiltersState {
   batteryMake: null | string,
   batteryModel: null | string,
 };
-
 export interface TruckData {
   id: string;
   orderId: string;
@@ -75,7 +73,7 @@ const Trucks = () => {
     data: trucks,
     isLoading,
     refetch,
-  }: UseQueryResult<TruckData[], unknown> = useQuery(["trucks", page, size, filtersState], () => fetchTrucks(page, size), {
+  }: UseQueryResult<TruckData[], unknown> = useQuery(["trucks", page, size], () => fetchTrucks(page, size), {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
