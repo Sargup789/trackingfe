@@ -87,8 +87,7 @@ const TruckIndex = ({ truckData, deleteTruck, refetch, setPage, setSize, page, s
     return (
         <QueryClientProvider client={queryClient}>
             <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div></div>
-                {/* <Button
+                <Button
                     style={{
                         borderRadius: 15,
                         backgroundColor: "#E96820",
@@ -98,7 +97,7 @@ const TruckIndex = ({ truckData, deleteTruck, refetch, setPage, setSize, page, s
                     onClick={() => setShowFilters(prev => !prev)}
                 >
                     {showFilters ? "Hide Filters" : "Show Filters"}
-                </Button> */}
+                </Button>
                 <Typography align='left' style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Button
                         style={{

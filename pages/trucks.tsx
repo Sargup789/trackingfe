@@ -11,18 +11,11 @@ type ConditionValue = {
 };
 
 export interface FiltersState {
-  zoneId: null | string,
-  make: null | string,
-  model: null | string,
-  manufacturedYear: null | ConditionValue,
-  hourMeter: null | ConditionValue,
+  vin: null | string,
+  modelNumber: null | string,
+  stockNumber: null | string,
   serialNumber: null | string,
-  fuelType: null | string,
-  isRetailReady: null | boolean,
-  status: null | string,
-  arrivalDate: null | string
-  batteryMake: null | string,
-  batteryModel: null | string,
+  orderId: null | string
 };
 export interface TruckData {
   id: string;
@@ -39,11 +32,11 @@ export interface ChecklistItemData {
   isActive: boolean;
 }
 
-export const fetchTrucks = async (page = 1, size = 10) => {
+export const fetchTrucks = async (page = 1, size = 10, filters = {}) => {
   console.log("fetchTrucks", process.env.ROOT_URL);
   const response = await axios.get(`/api/router?path=api/truck`, {
     params: {
-      // ...filters,
+      ...filters,
       page,
       size
     }
@@ -55,25 +48,18 @@ const Trucks = () => {
   const [page, setPage] = React.useState(1);
   const [size, setSize] = React.useState(10);
   const [filtersState, setFilterState] = React.useState<FiltersState>({
-    zoneId: null,
-    make: null,
-    model: null,
-    manufacturedYear: { condition: "=", value: null },
-    serialNumber: null,
-    fuelType: null,
-    isRetailReady: null,
-    status: null,
-    hourMeter: { condition: "=", value: null },
-    arrivalDate: null,
-    batteryMake: null,
-    batteryModel: null,
+    orderId: null,
+    vin: null,
+    modelNumber: null,
+    stockNumber: null,
+    serialNumber: null
   })
 
   const {
     data: trucks,
     isLoading,
     refetch,
-  }: UseQueryResult<TruckData[], unknown> = useQuery(["trucks", page, size], () => fetchTrucks(page, size), {
+  }: UseQueryResult<TruckData[], unknown> = useQuery(["trucks", page, size, filtersState], () => fetchTrucks(page, size, filtersState), {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });

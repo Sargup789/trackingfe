@@ -3,7 +3,6 @@ import CabinIcon from '@mui/icons-material/Cabin';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleIcon from '@mui/icons-material/People';
-import TaskIcon from '@mui/icons-material/Task';
 import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
 import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined';
@@ -11,7 +10,6 @@ import ChecklistRoundedIcon from '@mui/icons-material/ChecklistRounded';
 import { Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Toolbar, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import LogoutButton from './withLogout';
-// import TvButton from './tvBoard';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 
@@ -118,7 +116,6 @@ const Layout = ({ children }: Props) => {
             component="div"
             style={{ display: 'flex', justifyContent: 'space-between', width: "100%" }}>
             Home
-            {/* <TvButton/> */}
             <LogoutButton />
           </Typography>
         </Toolbar>
