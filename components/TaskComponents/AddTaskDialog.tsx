@@ -59,18 +59,11 @@ const AddTaskDialog: React.FC<TaskDialogProps> = ({
   const [page, setPage] = React.useState(1);
   const [size, setSize] = React.useState(10);
   const [filtersState, setFilterState] = React.useState<FiltersState>({
-    zoneId: null,
-    make: null,
-    model: null,
-    manufacturedYear: { condition: "=", value: null },
-    serialNumber: null,
-    fuelType: null,
-    isRetailReady: null,
-    status: null,
-    hourMeter: { condition: "=", value: null },
-    arrivalDate: null,
-    batteryMake: null,
-    batteryModel: null,
+    orderId: null,
+    vin: null,
+    modelNumber: null,
+    stockNumber: null,
+    serialNumber: null
   })
 
   const {
