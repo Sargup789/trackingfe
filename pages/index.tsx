@@ -2,7 +2,6 @@ import DashboardIndex from "@/components/DashboardComponents"
 import Layout from '@/components/general/Layout'
 import axios from "axios";
 import { UseQueryResult, useQuery } from "react-query";
-import { ZoneData } from "./zone";
 import { useState } from "react";
 import withLogin from "@/components/general/withLogin";
 

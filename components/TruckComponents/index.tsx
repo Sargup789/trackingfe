@@ -1,14 +1,12 @@
-import { Box, Button, Tooltip, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { useState } from "react";
 import AddTruckDialog from "./AddTruckDialog";
 import TruckTable from "./TruckTable"
 import { FiltersState, TruckData } from "@/pages/trucks";
 import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import xlsx from "json-as-xlsx"
 import { toast } from "react-toastify";
-import TruckTableFilters from "../TaskComponents/TruckTableFilters";
+import TruckTableFilters from "../FilterComponents/TruckTableFilters";
 
 type Props = {
     truckData: TruckData[];
