@@ -45,7 +45,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
 
     useEffect(() => {
         fetchOrderIds();
-    }, []);
+    }, [handleClose]);
 
     const toSlugFormat = (str: string) => {
         return str.toLowerCase().replace(/\s+/g, '-');
