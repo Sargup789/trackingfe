@@ -4,8 +4,6 @@ import axios from "axios";
 import { UseQueryResult, useQuery } from "react-query";
 import { useState } from "react";
 import withLogin from "@/components/general/withLogin";
-
-
 export interface OrderData {
   id: string;
   orderId: string;
@@ -29,12 +27,10 @@ const fetchOrders = async (page = 1, size = 10) => {
   return response.data;
 };
 
-
 const index = () => {
 
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-
 
   const {
     data: orders,
@@ -45,11 +41,10 @@ const index = () => {
     refetchOnReconnect: false,
   });
 
-  const deleteOrder = async (id: string) => {
-    await axios.delete(`/api/router?path=api/order/${id}`);
+  const deleteOrder = async (orderId: string) => {
+    await axios.delete(`/api/router?path=api/order/${orderId}`);
     refetch()
   };
-
 
   return (
     <Layout>
