@@ -10,7 +10,7 @@ const VendorSourcing: React.FC = () => {
 
     const headerMappings: any = {
         question: "Components",
-        leadTime: "Lead Time",
+        leadTime: "Lead Time (No. of Days)",
         status: "Status"
     };
 
@@ -37,7 +37,6 @@ const VendorSourcing: React.FC = () => {
             }
         }
     };
-
 
     return (
         <Box style={{
@@ -91,6 +90,7 @@ const VendorSourcing: React.FC = () => {
                                                     <TextField
                                                         value={value}
                                                         type="number"
+                                                        disabled={item.status === 'FULFILLED'}
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     />
                                                 </TableCell>
