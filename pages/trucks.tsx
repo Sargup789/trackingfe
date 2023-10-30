@@ -28,7 +28,9 @@ export interface TruckData {
 }
 export interface ChecklistItemData {
   question: string;
-  answer: "Yes" | "No";
+  answer: "yes" | "no";
+  leadTime: number;
+  status: "OREDERED" | "FULFILLED"
   isActive: boolean;
 }
 
