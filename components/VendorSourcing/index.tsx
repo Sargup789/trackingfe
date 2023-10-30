@@ -74,38 +74,40 @@ const VendorSourcing: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {truckDetails.checklist.map((item, index) => (<TableRow key={index}>
-                                {Object.entries(item).map(([key, value], idx) => {
-                                    if (key === 'isActive') return null;
-                                    if (key === 'answer') return null;
-                                    if (key === 'leadTime') {
-                                        return (
-                                            <TableCell key={idx}>
-                                                <TextField
-                                                    value={value}
-                                                    type="number"
-                                                    onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
-                                                />
-                                            </TableCell>
-                                        );
-                                    } else if (key === 'status') {
-                                        return (
-                                            <TableCell key={idx}>
-                                                <RadioGroup
-                                                    value={value}
-                                                    onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
-                                                >
-                                                    <FormControlLabel value="ORDERED" control={<Radio />} label="ORDERED" />
-                                                    <FormControlLabel value="FULFILLED" control={<Radio />} label="FULFILLED" />
-                                                </RadioGroup>
-                                            </TableCell>
-                                        );
-                                    } else {
-                                        return <TableCell key={idx}>{value}</TableCell>;
-                                    }
-                                })}
-                            </TableRow>
-                            ))}
+                            {truckDetails.checklist.map((item, index) => {
+                                if (item.answer === 'no') return null;
+                                return <TableRow key={index}>
+                                    {Object.entries(item).map(([key, value], idx) => {
+                                        if (key === 'isActive') return null;
+                                        if (key === 'answer') return null;
+                                        if (key === 'leadTime') {
+                                            return (
+                                                <TableCell key={idx}>
+                                                    <TextField
+                                                        value={value}
+                                                        type="number"
+                                                        onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
+                                                    />
+                                                </TableCell>
+                                            );
+                                        } else if (key === 'status') {
+                                            return (
+                                                <TableCell key={idx}>
+                                                    <RadioGroup
+                                                        value={value}
+                                                        onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
+                                                    >
+                                                        <FormControlLabel value="ORDERED" control={<Radio />} label="ORDERED" />
+                                                        <FormControlLabel value="FULFILLED" control={<Radio />} label="FULFILLED" />
+                                                    </RadioGroup>
+                                                </TableCell>
+                                            );
+                                        } else {
+                                            return <TableCell key={idx}>{value}</TableCell>;
+                                        }
+                                    })}
+                                </TableRow>
+                            })}
                         </TableBody>
                     </Table>
                 </Paper>
