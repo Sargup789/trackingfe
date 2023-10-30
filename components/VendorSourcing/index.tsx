@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Radio, RadioGroup, Paper } from '@mui/material';
 import axios from 'axios';
 import { ChecklistItemData, TruckData } from '@/pages/trucks';
 
@@ -7,6 +7,12 @@ import { ChecklistItemData, TruckData } from '@/pages/trucks';
 const VendorSourcing: React.FC = () => {
     const [vin, setVin] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<TruckData | null>(null);
+
+    const headerMappings: any = {
+        question: "Checklist Item",
+        leadTime: "Lead Time",
+        status: "Status"
+    };
 
     const handleSearch = async () => {
         try {
@@ -54,20 +60,24 @@ const VendorSourcing: React.FC = () => {
             </Box>
 
             {truckDetails && truckDetails.checklist && (
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            {Object.keys(truckDetails.checklist[0]).map((key) => {
-                                if (key !== 'isActive') return <TableCell key={key} style={{ fontWeight: 'bold' }}>{key}</TableCell>
-                            })}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {truckDetails.checklist.map((item, index) => {
-                            if (item.answer === 'no') return null;
-                            return <TableRow key={index}>
+                <Paper elevation={3} style={{ marginTop: '20px' }}>
+
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                {Object.keys(truckDetails.checklist[0]).map((key) => {
+                                    if (key !== 'answer' && key !== 'isActive') {
+                                        return <TableCell key={key} style={{ fontWeight: 'bold' }}>{headerMappings[key] || key}</TableCell>;
+                                    }
+                                    return null;
+                                })}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {truckDetails.checklist.map((item, index) => (<TableRow key={index}>
                                 {Object.entries(item).map(([key, value], idx) => {
                                     if (key === 'isActive') return null;
+                                    if (key === 'answer') return null;
                                     if (key === 'leadTime') {
                                         return (
                                             <TableCell key={idx}>
@@ -95,9 +105,10 @@ const VendorSourcing: React.FC = () => {
                                     }
                                 })}
                             </TableRow>
-                        })}
-                    </TableBody>
-                </Table>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Paper>
             )}
         </Box>
     );
