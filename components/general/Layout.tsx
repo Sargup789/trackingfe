@@ -3,9 +3,7 @@ import CabinIcon from '@mui/icons-material/Cabin';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleIcon from '@mui/icons-material/People';
-import KeyboardDoubleArrowDownRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowDownRounded';
-import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
-import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined';
+import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import ChecklistRoundedIcon from '@mui/icons-material/ChecklistRounded';
 import { Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Toolbar, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -17,15 +15,11 @@ type Props = { children: ReactNode }
 
 const drawerItems = [
   { name: 'Orders', path: '/' },
-  // { name: 'Task', path: '/task' },
   { name: 'Trucks', path: '/trucks' },
-  // { name: 'Zone', path: '/zone' },
   { name: 'Vendor Sourcing', path: '/vendorsourcing' },
   { name: 'Status Update', path: '/statusupdate' },
   { name: 'Users', path: '/user' },
-  // { name: 'Dropdown Master', path: '/dropdownmaster' },
   { name: 'Checklist', path: '/checklist' },
-  // { name: 'Tv', path: '/_tv' },
 ]
 
 const drawerWidth = 240;
@@ -153,17 +147,13 @@ const Layout = ({ children }: Props) => {
                     />
                     : index === 1
                       ? <LocalShippingOutlinedIcon />
-                      : index === 3
-                        ? <CabinIcon />
-                        : index === 4
-                          ? <PeopleIcon />
-                          : index === 6
-                            ? <KeyboardDoubleArrowDownRoundedIcon />
-                            : index === 5
-                              ? <ChecklistRoundedIcon />
-                              : index === 7
-                                ? <ArrowDropDownCircleOutlinedIcon />
-                                : <KeyboardDoubleArrowUpRoundedIcon />
+                      : index === 2
+                        ? <BuildCircleOutlinedIcon />
+                        : index === 3
+                          ? <CabinIcon />
+                          : index === 4
+                            ? <PeopleIcon />
+                            : <ChecklistRoundedIcon />
                   }                </ListItemIcon>
                 <ListItemText primary={item.name} />
               </ListItemButton>

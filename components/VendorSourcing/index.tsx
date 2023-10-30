@@ -3,7 +3,6 @@ import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Bo
 import axios from 'axios';
 import { ChecklistItemData, TruckData } from '@/pages/trucks';
 
-
 const VendorSourcing: React.FC = () => {
     const [vin, setVin] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<TruckData | null>(null);
