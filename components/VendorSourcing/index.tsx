@@ -9,7 +9,7 @@ const VendorSourcing: React.FC = () => {
     const [truckDetails, setTruckDetails] = useState<TruckData | null>(null);
 
     const headerMappings: any = {
-        question: "Checklist Item",
+        question: "Components",
         leadTime: "Lead Time",
         status: "Status"
     };
@@ -54,7 +54,12 @@ const VendorSourcing: React.FC = () => {
                     onChange={(e) => setVin(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}
-                    style={{ marginLeft: '20px' }}>
+                    style={{
+                        borderRadius: 15,
+                        backgroundColor: "#E96820",
+                        fontSize: "13px",
+                        marginLeft: '20px'
+                    }}>
                     Search
                 </Button>
             </Box>
