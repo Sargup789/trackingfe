@@ -5,17 +5,18 @@ import axios from 'axios';
 const StatusUpdate: React.FC = () => {
     const [vin, setVin] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<any>(null);
-    const [leadTimes, setLeadTimes] = useState<any>({});
+    const [leadTime, setLeadTime] = useState<any>({});
+    const [truckStatus, setStatus] = useState<any>('Retail Order Generated');
 
-    const hardcodedStatuses = [
-        "RETAIL_ORDER_GENERATED",
-        "IN_PRODUCTION_WITH_TMH",
-        "SHIPPED_TO_TLNW",
-        "WORK_ORDER_RELEASED",
-        "PDI",
-        "IN_TRANSPORTATION",
-        "RECEIVED_BY_CUSTOMER"
-    ];
+    const possibleStatuses = {
+        RETAIL_ORDER_GENERATED: "Retail Order Generated",
+        IN_PRODUCTION_WITH_TMH: "In Production with TMH",
+        SHIPPED_TO_TLNW: "Shipped to Toyota Lift Northwest",
+        WORK_ORDER_RELEASED: "Work Order Released",
+        PDI: "PDI",
+        IN_TRANSPORTATION: "In Transportation",
+        RECEIVED_BY_CUSTOMER: "Received By Customer",
+    }
 
     const headerMappings: any = {
         status: "Status Update",
@@ -26,8 +27,8 @@ const StatusUpdate: React.FC = () => {
         try {
             const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
             setTruckDetails(response.data);
-            // Initialize lead times with the values from the response
-            setLeadTimes(response.data.leadTime);
+            setStatus(response.data.status)
+            setLeadTime(response.data.leadTime);
         } catch (error) {
             console.error('Error fetching truck details:', error);
         }
@@ -35,27 +36,28 @@ const StatusUpdate: React.FC = () => {
 
     const handleUpdateStatus = async (status: string, isChecked: boolean) => {
         if (truckDetails) {
-            // Check if the status is one of the hardcoded statuses
-            if (hardcodedStatuses.includes(status)) {
-                // Update the local state
-                const updatedStatus = { ...truckDetails.status };
-                updatedStatus[status] = isChecked;
-                setTruckDetails({ ...truckDetails, status: updatedStatus });
-
-                try {
-                    await axios.put(`/api/router?path=api/truck/${truckDetails.id}`, { status: updatedStatus });
-                } catch (error) {
-                    console.error('Error updating truck details:', error);
-                }
-            } else {
-                console.error('Invalid status:', status);
+            console.log('status', status)
+            // Update the local state
+            setTruckDetails({ ...truckDetails, status });
+            try {
+                await axios.put(`/api/router?path=api/truck/${truckDetails.id}`, { status });
+                handleSearch()
+            } catch (error) {
+                console.error('Error updating truck details:', error);
             }
         }
     };
 
-    const handleLeadTimeChange = (status: string, value: number) => {
+    const handleLeadTimeChange = async (status: string, value: number) => {
+        console.log('status', status, 'value', value)
         // Update the local state with the new lead time value
-        setLeadTimes({ ...leadTimes, [status]: value });
+        setLeadTime({ ...leadTime, [status]: value });
+        try {
+            await axios.put(`/api/router?path=api/truck/${truckDetails.id}`, { leadTime: { ...leadTime, [status]: value } });
+            handleSearch()
+        } catch (error) {
+            console.error('Error updating truck details:', error);
+        }
     };
 
     return (
@@ -92,13 +94,13 @@ const StatusUpdate: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {hardcodedStatuses.map((status, index) => (
+                            {Object.values(possibleStatuses).map((status, index) => (
                                 <TableRow key={index}>
                                     <TableCell>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
-                                                    checked={truckDetails.status[status]}
+                                                    checked={truckDetails.status === status}
                                                     onChange={(e) => handleUpdateStatus(status, e.target.checked)}
                                                 />
                                             }
@@ -108,7 +110,7 @@ const StatusUpdate: React.FC = () => {
                                     <TableCell>
                                         <input
                                             type="number"
-                                            value={leadTimes[status] || ''}
+                                            value={leadTime[status] || ''}
                                             onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
                                         />
                                     </TableCell>
