@@ -5,35 +5,57 @@ import axios from 'axios';
 const StatusUpdate: React.FC = () => {
     const [vin, setVin] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<any>(null);
+    const [leadTimes, setLeadTimes] = useState<any>({});
+
+    const hardcodedStatuses = [
+        "RETAIL_ORDER_GENERATED",
+        "IN_PRODUCTION_WITH_TMH",
+        "SHIPPED_TO_TLNW",
+        "WORK_ORDER_RELEASED",
+        "PDI",
+        "IN_TRANSPORTATION",
+        "RECEIVED_BY_CUSTOMER"
+    ];
 
     const headerMappings: any = {
-        question: "Statuses",
-        leadTime: "Lead Time (No. of Days)",
-        status: "Status Update"
+        status: "Status Update",
+        leadTime: "Lead Time (No. of Days)"
     };
 
     const handleSearch = async () => {
         try {
             const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
             setTruckDetails(response.data);
+            // Initialize lead times with the values from the response
+            setLeadTimes(response.data.leadTime);
         } catch (error) {
             console.error('Error fetching truck details:', error);
         }
     };
 
-    const handleUpdateChecklist = async (status: string, isChecked: boolean) => {
+    const handleUpdateStatus = async (status: string, isChecked: boolean) => {
         if (truckDetails) {
-            // Update the local state
-            const updatedChecklist = { ...truckDetails.leadTime };
-            updatedChecklist[status] = isChecked;
-            setTruckDetails({ ...truckDetails, leadTime: updatedChecklist });
+            // Check if the status is one of the hardcoded statuses
+            if (hardcodedStatuses.includes(status)) {
+                // Update the local state
+                const updatedStatus = { ...truckDetails.status };
+                updatedStatus[status] = isChecked;
+                setTruckDetails({ ...truckDetails, status: updatedStatus });
 
-            try {
-                await axios.put(`/api/router?path=api/truck/${truckDetails.id}`, { leadTime: updatedChecklist });
-            } catch (error) {
-                console.error('Error updating truck details:', error);
+                try {
+                    await axios.put(`/api/router?path=api/truck/${truckDetails.id}`, { status: updatedStatus });
+                } catch (error) {
+                    console.error('Error updating truck details:', error);
+                }
+            } else {
+                console.error('Invalid status:', status);
             }
         }
+    };
+
+    const handleLeadTimeChange = (status: string, value: number) => {
+        // Update the local state with the new lead time value
+        setLeadTimes({ ...leadTimes, [status]: value });
     };
 
     return (
@@ -60,7 +82,6 @@ const StatusUpdate: React.FC = () => {
                     Search
                 </Button>
             </Box>
-
             {truckDetails && truckDetails.leadTime && (
                 <Paper elevation={3} style={{ marginTop: '20px' }}>
                     <Table>
@@ -71,20 +92,26 @@ const StatusUpdate: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {Object.entries(truckDetails.leadTime).map(([status, leadTime], index) => (
+                            {hardcodedStatuses.map((status, index) => (
                                 <TableRow key={index}>
                                     <TableCell>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
-                                                    // checked={leadTime}
-                                                    onChange={(e) => handleUpdateChecklist(status, e.target.checked)}
+                                                    checked={truckDetails.status[status]}
+                                                    onChange={(e) => handleUpdateStatus(status, e.target.checked)}
                                                 />
                                             }
                                             label={status}
                                         />
                                     </TableCell>
-                                    <TableCell>{leadTime}</TableCell>
+                                    <TableCell>
+                                        <input
+                                            type="number"
+                                            value={leadTimes[status] || ''}
+                                            onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
+                                        />
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
