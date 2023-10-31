@@ -25,6 +25,8 @@ export interface TruckData {
   stockNumber: string;
   checklist: ChecklistItemData[];
   serialNumber: string;
+  status: string;
+  leadTime: number;
 }
 export interface ChecklistItemData {
   question: string;
