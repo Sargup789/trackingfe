@@ -40,6 +40,7 @@ export default function Truck({
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Vehicle Model</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Serial Number</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Stock Number</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Status</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -51,6 +52,7 @@ export default function Truck({
                                 <TableCell align='center'>{row.modelNumber}</TableCell>
                                 <TableCell align='center'>{row.serialNumber}</TableCell>
                                 <TableCell align='center'>{row.stockNumber}</TableCell>
+                                <TableCell align='center'>{row.status}</TableCell>
                                 <TableCell align='center'>
                                     <Tooltip title="View" followCursor>
                                         <IconButton

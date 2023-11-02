@@ -84,7 +84,7 @@ const StatusUpdate: React.FC = () => {
                     Search
                 </Button>
             </Box>
-            {truckDetails && truckDetails.leadTime && (
+            {truckDetails && (
                 <Paper elevation={3} style={{ marginTop: '20px' }}>
                     <Table>
                         <TableHead>
@@ -110,7 +110,7 @@ const StatusUpdate: React.FC = () => {
                                     <TableCell>
                                         <input
                                             type="number"
-                                            value={leadTime[status] || ''}
+                                            value={leadTime[status]}
                                             onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
                                         />
                                     </TableCell>
