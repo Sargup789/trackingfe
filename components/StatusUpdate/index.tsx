@@ -5,7 +5,15 @@ import axios from 'axios';
 const StatusUpdate: React.FC = () => {
     const [vin, setVin] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<any>(null);
-    const [leadTime, setLeadTime] = useState<any>({});
+    const [leadTime, setLeadTime] = useState<any>({
+        RETAIL_ORDER_GENERATED: 0,
+        IN_PRODUCTION_WITH_TMH: 0,
+        SHIPPED_TO_TLNW: 0,
+        WORK_ORDER_RELEASED: 0,
+        PDI: 0,
+        IN_TRANSPORTATION: 0,
+        RECEIVED_BY_CUSTOMER: 0,
+    });
     const [truckStatus, setStatus] = useState<any>('Retail Order Generated');
 
     const possibleStatuses = {
@@ -107,13 +115,11 @@ const StatusUpdate: React.FC = () => {
                                             label={status}
                                         />
                                     </TableCell>
-                                    <TableCell>
-                                        <input
-                                            type="number"
-                                            value={leadTime[status]}
-                                            onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
-                                        />
-                                    </TableCell>
+                                    <input
+                                        type="number"
+                                        value={leadTime?.hasOwnProperty(status) ? leadTime[status] : ""}
+                                        onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
+                                    />
                                 </TableRow>
                             ))}
                         </TableBody>
