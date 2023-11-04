@@ -5,11 +5,6 @@ import { UseQueryResult, useQuery } from "react-query";
 import React from "react";
 import withLogin from "@/components/general/withLogin";
 
-type ConditionValue = {
-  condition: ">" | "=" | "<";
-  value: string | null;
-};
-
 export interface FiltersState {
   vin: null | string,
   modelNumber: null | string,

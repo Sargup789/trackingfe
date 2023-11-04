@@ -42,7 +42,7 @@ const StatusUpdate: React.FC = () => {
             setLeadTime(response.data.leadTime);
         } catch (error) {
             console.error('Error fetching truck details:', error);
-            toast.error("Truck not found registed with this vin")
+            toast.error("Truck not found registered with this vin")
         }
     };
 

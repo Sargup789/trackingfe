@@ -4,6 +4,13 @@ import axios from "axios";
 import { UseQueryResult, useQuery } from "react-query";
 import { useState } from "react";
 import withLogin from "@/components/general/withLogin";
+import React from "react";
+
+export interface FiltersState {
+  orderId: null | string,
+  customerName: null | string,
+  deliveryLocation: null | string,
+};
 export interface OrderData {
   id: string;
   orderId: string;
@@ -15,10 +22,11 @@ export interface OrderData {
   numberOfTrucks: number;
 }
 
-const fetchOrders = async (page = 1, size = 10) => {
+const fetchOrders = async (page = 1, size = 10, filters = {}) => {
   console.log("fetchOrders", process.env.ROOT_URL);
   const response = await axios.get(`/api/router?path=api/order`, {
     params: {
+      ...filters,
       page,
       size
     }
@@ -31,12 +39,17 @@ const index = () => {
 
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const [filtersState, setFilterState] = React.useState<FiltersState>({
+    orderId: null,
+    customerName: null,
+    deliveryLocation: null
+  })
 
   const {
     data: orders,
     isLoading,
     refetch,
-  }: UseQueryResult<OrderData[], unknown> = useQuery(["zones", page, size], () => fetchOrders(page, size), {
+  }: UseQueryResult<OrderData[], unknown> = useQuery(["zones", page, size, filtersState], () => fetchOrders(page, size, filtersState), {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -56,6 +69,8 @@ const index = () => {
           deleteOrder={deleteOrder}
           setPage={setPage}
           setSize={setSize}
+          filtersState={filtersState}
+          setFilterState={setFilterState}
           refetch={refetch}
           page={page}
           size={size} />
