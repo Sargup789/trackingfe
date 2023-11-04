@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Radio, RadioGroup, Paper } from '@mui/material';
 import axios from 'axios';
 import { ChecklistItemData, TruckData } from '@/pages/trucks';
+import { toast } from 'react-toastify';
 
 const VendorSourcing: React.FC = () => {
-    const [vin, setVin] = useState<string>('');
+    const [stockNumber, setStockNumber] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<TruckData | null>(null);
 
     const headerMappings: any = {
@@ -15,10 +16,12 @@ const VendorSourcing: React.FC = () => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
+            const response = await axios.get(`/api/router?path=api/truck/stockNumber/${stockNumber}`);
+            toast.success("Accessories details registed with this stock number");
             setTruckDetails(response.data);
         } catch (error) {
             console.error('Error fetching truck details:', error);
+            toast.error("Truck not found registed with this stock number")
         }
     };
 
@@ -45,11 +48,11 @@ const VendorSourcing: React.FC = () => {
         }}>
             <Box style={{ display: 'flex', padding: '24px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <TextField
-                    label="Enter VIN"
+                    label="Enter Stock Number"
                     variant="outlined"
                     size='medium'
-                    value={vin}
-                    onChange={(e) => setVin(e.target.value)}
+                    value={stockNumber}
+                    onChange={(e) => setStockNumber(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}
                     style={{
