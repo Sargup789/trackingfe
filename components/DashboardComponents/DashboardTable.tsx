@@ -40,7 +40,7 @@ export default function DashboardTable({ dashboardData, editOrder, viewOrder, de
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold' }}>Quote Number/CRM Number</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Quote Number</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Company Name</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Phone No.</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Email Id</TableCell>
