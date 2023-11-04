@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Checkbox, Paper } from '@mui/material';
+import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Checkbox, Paper, IconButton } from '@mui/material';
 import axios from 'axios';
+import ClearIcon from '@mui/icons-material/Clear';
+import { toast } from 'react-toastify';
 
 const StatusUpdate: React.FC = () => {
     const [vin, setVin] = useState<string>('');
@@ -34,11 +36,13 @@ const StatusUpdate: React.FC = () => {
     const handleSearch = async () => {
         try {
             const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
+            toast.success("Status details registed with this vin");
             setTruckDetails(response.data);
             setStatus(response.data.status)
             setLeadTime(response.data.leadTime);
         } catch (error) {
             console.error('Error fetching truck details:', error);
+            toast.error("Truck not found registed with this vin")
         }
     };
 
@@ -80,6 +84,13 @@ const StatusUpdate: React.FC = () => {
                     variant="outlined"
                     size='medium'
                     value={vin}
+                    InputProps={{
+                        endAdornment: (
+                            <>
+                                <IconButton onClick={() => { setVin(''); setTruckDetails(null) }}><ClearIcon /></IconButton>
+                            </>
+                        )
+                    }}
                     onChange={(e) => setVin(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}

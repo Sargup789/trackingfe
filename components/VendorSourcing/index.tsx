@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Radio, RadioGroup, Paper } from '@mui/material';
+import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Radio, RadioGroup, Paper, IconButton } from '@mui/material';
 import axios from 'axios';
 import { ChecklistItemData, TruckData } from '@/pages/trucks';
 import { toast } from 'react-toastify';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const VendorSourcing: React.FC = () => {
     const [stockNumber, setStockNumber] = useState<string>('');
@@ -52,6 +53,13 @@ const VendorSourcing: React.FC = () => {
                     variant="outlined"
                     size='medium'
                     value={stockNumber}
+                    InputProps={{
+                        endAdornment: (
+                            <>
+                                <IconButton onClick={() => { setStockNumber(''); setTruckDetails(null) }}><ClearIcon /></IconButton>
+                            </>
+                        )
+                    }}
                     onChange={(e) => setStockNumber(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}
