@@ -140,7 +140,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                 <Field name="orderId">
                                     {({ input }) => (
                                         <Box>
-                                            <Typography className="label">Order ID</Typography>
+                                            <Typography className="label">Quote Number / CRM Number</Typography>
                                             <FormControl fullWidth>
                                                 <Select
                                                     {...input}
@@ -160,12 +160,12 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                 <Field name="vin">
                                     {({ input }) => (
                                         <Box>
-                                            <Typography className="label">VIN</Typography>
+                                            <Typography className="label">Truck Number / VIN / SR Number</Typography>
                                             <TextField
                                                 {...input}
                                                 fullWidth
                                                 size="small"
-                                                placeholder="VIN"
+                                                placeholder="Truck Number / VIN / SR Number"
                                             />
                                         </Box>
                                     )}

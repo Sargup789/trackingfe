@@ -35,8 +35,8 @@ export default function Truck({
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Order ID</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>VIN</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Quote Number/CRM Number</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Truck Number</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Vehicle Model</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Serial Number</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Stock Number</TableCell>

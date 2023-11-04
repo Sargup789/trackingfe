@@ -32,7 +32,7 @@ export interface ChecklistItemData {
   question: string;
   answer: "yes" | "no";
   leadTime: number;
-  status: "OREDERED" | "FULFILLED"
+  status: "PO GENERATED" | "AWAITING DELIVERY" | "DELIVERED"
   isActive: boolean;
 }
 

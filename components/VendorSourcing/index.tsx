@@ -89,7 +89,7 @@ const VendorSourcing: React.FC = () => {
                                                     <TextField
                                                         value={value}
                                                         type="number"
-                                                        disabled={item.status === 'FULFILLED'}
+                                                        disabled={item.status === 'DELIVERED'}
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     />
                                                 </TableCell>
@@ -101,8 +101,9 @@ const VendorSourcing: React.FC = () => {
                                                         value={value}
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     >
-                                                        <FormControlLabel value="ORDERED" control={<Radio />} label="ORDERED" />
-                                                        <FormControlLabel value="FULFILLED" control={<Radio />} label="FULFILLED" />
+                                                        <FormControlLabel value="PO GENERATED" control={<Radio />} label="PO GENERATED" />
+                                                        <FormControlLabel value="AWAITING DELIVERY" control={<Radio />} label="AWAITING DELIVERY" />
+                                                        <FormControlLabel value="DELIVERED" control={<Radio />} label="DELIVERED" />
                                                     </RadioGroup>
                                                 </TableCell>
                                             );
