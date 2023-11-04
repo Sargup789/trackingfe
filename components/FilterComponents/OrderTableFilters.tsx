@@ -86,7 +86,7 @@ const OrderTableFilters = ({ filtersState, setFilterState }: Props) => {
         <div style={{ padding: '10px' }}>
             <Box sx={{ display: 'flex', width: '100%' }}>
                 <FilterFormControl
-                    label="Order Ids"
+                    label="Quote Number"
                     values={filters?.orderIdData}
                     selectedValue={filtersState?.orderId}
                     onFilterChange={(value) => handleFilterStateChange('orderId', value)}

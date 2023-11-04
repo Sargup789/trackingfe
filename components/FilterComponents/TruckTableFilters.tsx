@@ -88,6 +88,13 @@ const TruckTableFilters = ({ filtersState, setFilterState }: Props) => {
         <div style={{ padding: '10px' }}>
             <Box sx={{ display: 'flex', width: '100%' }}>
                 <FilterFormControl
+                    label="Quote Number"
+                    values={filters?.orderIdData}
+                    selectedValue={filtersState?.orderId}
+                    onFilterChange={(value) => handleFilterStateChange('orderId', value)}
+                    onClearClick={() => handleClearClick('orderId')}
+                />
+                <FilterFormControl
                     label="Truck Number / VIN / SR Number"
                     values={filters?.vinData}
                     selectedValue={filtersState?.vin}
