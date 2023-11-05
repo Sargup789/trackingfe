@@ -16,7 +16,7 @@ const StatusUpdate: React.FC = () => {
         IN_TRANSPORTATION: 0,
         RECEIVED_BY_CUSTOMER: 0,
     });
-    const [truckStatus, setStatus] = useState<any>('Retail Order Generated');
+    const [staus, setStatus] = useState<any>('Retail Order Generated');
 
     const possibleStatuses = {
         RETAIL_ORDER_GENERATED: "Retail Order Generated",
