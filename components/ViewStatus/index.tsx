@@ -87,28 +87,28 @@ const ViewStatus: React.FC = () => {
             </Select>
             <br />
             <br />
-            {truckDetails.length > 0 && (
+            {truckDetails.length > 0 ? (
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Truck No</TableCell>
-                                <TableCell>Model No</TableCell>
-                                <TableCell>Serial No</TableCell>
-                                <TableCell>Stock No</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Checklist Status</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Truck No</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Model No</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Serial No</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Stock No</TableCell>
+                                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Status</TableCell>
+                                <TableCell align="left" sx={{ fontWeight: 'bold' }}>Checklist Status</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {truckDetails.map((truck) => (
                                 <TableRow key={truck.id}>
                                     <TableCell>{truck.vin}</TableCell>
-                                    <TableCell>{truck.modelNumber}</TableCell>
-                                    <TableCell>{truck.serialNumber}</TableCell>
-                                    <TableCell>{truck.stockNumber}</TableCell>
-                                    <TableCell>{truck.status}</TableCell>
-                                    <TableCell>
+                                    <TableCell align='center'>{truck.modelNumber}</TableCell>
+                                    <TableCell align='center'>{truck.serialNumber}</TableCell>
+                                    <TableCell align='center'>{truck.stockNumber}</TableCell>
+                                    <TableCell align='center'>{truck.status}</TableCell>
+                                    <TableCell align='left'>
                                         {displayCheckListTable(truck.checklist)}
                                         {/* {truck.checklist
                                             .filter((item) => item.answer === 'yes')
@@ -120,7 +120,12 @@ const ViewStatus: React.FC = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            )}
+            ) : (
+                <Typography variant="body2" color="textSecondary">
+                    No trucks added for this order.
+                </Typography>
+            )
+            }
         </Box>
     )
 }
