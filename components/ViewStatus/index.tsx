@@ -1,8 +1,9 @@
-import { Box, Button, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Box, Button, IconButton, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import axios from 'axios';
 import { ChecklistItemData, TruckData } from '@/pages/trucks';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const ViewStatus: React.FC = () => {
 
@@ -55,6 +56,13 @@ const ViewStatus: React.FC = () => {
                     onChange={(e: any) => setCompanyName(e.target.value)}
                     label="Company Name"
                     size='small'
+                    InputProps={{
+                        endAdornment: (
+                            <>
+                                <IconButton onClick={() => { setCompanyName(''); setQuoteNumbers([]); setSelectedQuoteNumber(''); setTruckDetails([]) }}><ClearIcon /></IconButton>
+                            </>
+                        )
+                    }}
                     variant="outlined"
                     sx={{ marginRight: 1, flexGrow: 0.5 }}
                 />
@@ -122,7 +130,7 @@ const ViewStatus: React.FC = () => {
                 </TableContainer>
             ) : (
                 <Typography variant="body2" color="textSecondary">
-                    No trucks added for this order.
+                    No trucks found.
                 </Typography>
             )
             }
