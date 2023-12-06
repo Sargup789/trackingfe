@@ -51,7 +51,7 @@ export default function Truck({
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Serial Number</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Stock Number</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Accessory Count</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Accessory Status (Delivered)</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Accessory Status (Received)</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Status</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Actions</TableCell>
                         </TableRow>

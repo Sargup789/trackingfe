@@ -211,7 +211,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                 </Field>
                             </Box>
                             <Box mt={3}>
-                                <Typography variant="h6" gutterBottom>Truck Accessories</Typography>
+                                <Typography variant="h6" gutterBottom>Truck Accessories Needed</Typography>
                                 <Grid container spacing={2}>
                                     {checklists.map((checklistItem) => (
                                         <Grid item xs={12} key={checklistItem.question}>
