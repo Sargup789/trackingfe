@@ -21,10 +21,10 @@ const StatusUpdate: React.FC = () => {
     const possibleStatuses = {
         RETAIL_ORDER_GENERATED: "Retail Order Generated",
         IN_PRODUCTION_WITH_TMH: "In Production with TMH",
-        SHIPPED_TO_TLNW: "Shipped to Toyota Lift Northwest",
-        WORK_ORDER_RELEASED: "Work Order Released",
-        PDI: "PDI",
-        IN_TRANSPORTATION: "In Transportation",
+        SHIPPED_TO_TLNW: "Received at Toyota Lift Northwest",
+        WORK_ORDER_RELEASED: "Work Order to Shop",
+        PDI: "PDI completion",
+        IN_TRANSPORTATION: "Bill of Lading to Transportation",
         RECEIVED_BY_CUSTOMER: "Received By Customer",
     }
 
@@ -80,7 +80,7 @@ const StatusUpdate: React.FC = () => {
         }}>
             <Box style={{ display: 'flex', padding: '24px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <TextField
-                    label="Enter VIN"
+                    label="Enter Truck Number"
                     variant="outlined"
                     size='medium'
                     value={vin}
