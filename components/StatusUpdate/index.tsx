@@ -14,6 +14,7 @@ const StatusUpdate: React.FC = () => {
         WORK_ORDER_RELEASED: 0,
         PDI: 0,
         IN_TRANSPORTATION: 0,
+        DELIVERY: 0,
         RECEIVED_BY_CUSTOMER: 0,
     });
     const [staus, setStatus] = useState<any>('Retail Order Generated');
@@ -25,6 +26,7 @@ const StatusUpdate: React.FC = () => {
         WORK_ORDER_RELEASED: "Work Order to Shop",
         PDI: "PDI completion",
         IN_TRANSPORTATION: "Bill of Lading to Transportation",
+        DELIVERY: "Delivery Scheduled",
         RECEIVED_BY_CUSTOMER: "Received By Customer",
     }
 
