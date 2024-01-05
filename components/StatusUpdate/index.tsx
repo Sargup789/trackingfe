@@ -10,7 +10,9 @@ const StatusUpdate: React.FC = () => {
     const [leadTime, setLeadTime] = useState<any>({
         RETAIL_ORDER_GENERATED: 0,
         IN_PRODUCTION_WITH_TMH: 0,
+        STOCK_UNIT_ON_FLOOR: 0,
         SHIPPED_TO_TLNW: 0,
+        LEASE_DOC_TM: 0,
         WORK_ORDER_RELEASED: 0,
         PDI: 0,
         IN_TRANSPORTATION: 0,
@@ -22,7 +24,9 @@ const StatusUpdate: React.FC = () => {
     const possibleStatuses = {
         RETAIL_ORDER_GENERATED: "Retail Order Generated",
         IN_PRODUCTION_WITH_TMH: "In Production with TMH",
+        STOCK_UNIT_ON_FLOOR: "Stock Unit on the Floor",
         SHIPPED_TO_TLNW: "Received at Toyota Lift Northwest",
+        LEASE_DOC_TM: "⁠Lease Docs/Proforma sent to TM",
         WORK_ORDER_RELEASED: "Work Order to Shop",
         PDI: "PDI completion",
         IN_TRANSPORTATION: "Bill of Lading to Transportation",

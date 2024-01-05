@@ -114,7 +114,7 @@ const VendorSourcing: React.FC = () => {
                                                     >
                                                         <FormControlLabel value="PO GENERATED" control={<Radio />} label="PO GENERATED" />
                                                         <FormControlLabel value="AWAITING DELIVERY" control={<Radio />} label="AWAITING DELIVERY" />
-                                                        <FormControlLabel value="DELIVERED" control={<Radio />} label="RECEIVED" />
+                                                        <FormControlLabel value="DELIVERED" control={<Radio />} label="ITEM RECEIVED" />
                                                     </RadioGroup>
                                                 </TableCell>
                                             );
