@@ -113,7 +113,7 @@ const VendorSourcing: React.FC = () => {
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     >
                                                         <FormControlLabel value="PO GENERATED" control={<Radio />} label="PO GENERATED" />
-                                                        <FormControlLabel value="AWAITING DELIVERY" control={<Radio />} label="AWAITING DELIVERY" />
+                                                        {/* <FormControlLabel value="AWAITING DELIVERY" control={<Radio />} label="AWAITING DELIVERY" /> */}
                                                         <FormControlLabel value="DELIVERED" control={<Radio />} label="ITEM RECEIVED" />
                                                     </RadioGroup>
                                                 </TableCell>
