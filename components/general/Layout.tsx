@@ -7,6 +7,7 @@ import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import ChecklistRoundedIcon from '@mui/icons-material/ChecklistRounded';
 import { Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Toolbar, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import PageviewOutlinedIcon from '@mui/icons-material/PageviewOutlined';
 import LogoutButton from './withLogout';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
@@ -14,6 +15,7 @@ import React, { ReactNode } from 'react';
 type Props = { children: ReactNode }
 
 const drawerItems = [
+  { name: 'View Truck Status', path: '/view' },
   { name: 'Orders', path: '/' },
   { name: 'Trucks', path: '/trucks' },
   { name: 'Vendor Sourcing', path: '/vendorsourcing' },
@@ -143,17 +145,19 @@ const Layout = ({ children }: Props) => {
               <ListItemButton>
                 <ListItemIcon>
                   {index === 0
-                    ? <DashboardIcon
-                    />
+                    ? <PageviewOutlinedIcon />
                     : index === 1
-                      ? <LocalShippingOutlinedIcon />
+                      ? <DashboardIcon
+                      />
                       : index === 2
-                        ? <BuildCircleOutlinedIcon />
+                        ? <LocalShippingOutlinedIcon />
                         : index === 3
-                          ? <CabinIcon />
+                          ? <BuildCircleOutlinedIcon />
                           : index === 4
-                            ? <PeopleIcon />
-                            : <ChecklistRoundedIcon />
+                            ? <CabinIcon />
+                            : index === 5
+                              ? <PeopleIcon />
+                              : <ChecklistRoundedIcon />
                   }                </ListItemIcon>
                 <ListItemText primary={item.name} />
               </ListItemButton>

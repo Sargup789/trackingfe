@@ -1,20 +1,36 @@
 import React, { useState } from 'react';
-import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Checkbox, Paper } from '@mui/material';
+import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Checkbox, Paper, IconButton } from '@mui/material';
 import axios from 'axios';
+import ClearIcon from '@mui/icons-material/Clear';
+import { toast } from 'react-toastify';
 
 const StatusUpdate: React.FC = () => {
     const [stockNumber, setStockNumber] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<any>(null);
-    const [leadTime, setLeadTime] = useState<any>({});
-    const [truckStatus, setStatus] = useState<any>('Retail Order Generated');
+    const [leadTime, setLeadTime] = useState<any>({
+        RETAIL_ORDER_GENERATED: 0,
+        IN_PRODUCTION_WITH_TMH: 0,
+        STOCK_UNIT_ON_FLOOR: 0,
+        SHIPPED_TO_TLNW: 0,
+        LEASE_DOC_TM: 0,
+        WORK_ORDER_RELEASED: 0,
+        PDI: 0,
+        IN_TRANSPORTATION: 0,
+        DELIVERY: 0,
+        RECEIVED_BY_CUSTOMER: 0,
+    });
+    const [staus, setStatus] = useState<any>('Retail Order Generated');
 
     const possibleStatuses = {
         RETAIL_ORDER_GENERATED: "Retail Order Generated",
         IN_PRODUCTION_WITH_TMH: "In Production with TMH",
-        SHIPPED_TO_TLNW: "Shipped to Toyota Lift Northwest",
-        WORK_ORDER_RELEASED: "Work Order Released",
-        PDI: "PDI",
-        IN_TRANSPORTATION: "In Transportation",
+        STOCK_UNIT_ON_FLOOR: "Stock Unit on the Floor",
+        SHIPPED_TO_TLNW: "Received at Toyota Lift Northwest",
+        LEASE_DOC_TM: "⁠Lease Docs/Proforma sent to TM",
+        WORK_ORDER_RELEASED: "Work Order to Shop",
+        PDI: "PDI completion",
+        IN_TRANSPORTATION: "Bill of Lading to Transportation",
+        DELIVERY: "Delivery Scheduled",
         RECEIVED_BY_CUSTOMER: "Received By Customer",
     }
 
@@ -26,11 +42,13 @@ const StatusUpdate: React.FC = () => {
     const handleSearch = async () => {
         try {
             const response = await axios.get(`/api/router?path=api/truck/stockNumber/${stockNumber}`);
+            toast.success("Status details registered with this stocknumber");
             setTruckDetails(response.data);
             setStatus(response.data.status)
             setLeadTime(response.data.leadTime);
         } catch (error) {
             console.error('Error fetching truck details:', error);
+            toast.error("Truck not found registered with this vin")
         }
     };
 
@@ -72,6 +90,13 @@ const StatusUpdate: React.FC = () => {
                     variant="outlined"
                     size='medium'
                     value={stockNumber}
+                    InputProps={{
+                        endAdornment: (
+                            <>
+                                <IconButton onClick={() => { setStockNumber(''); setTruckDetails(null) }}><ClearIcon /></IconButton>
+                            </>
+                        )
+                    }}
                     onChange={(e) => setStockNumber(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}
@@ -84,7 +109,7 @@ const StatusUpdate: React.FC = () => {
                     Search
                 </Button>
             </Box>
-            {truckDetails && truckDetails.leadTime && (
+            {truckDetails && (
                 <Paper elevation={3} style={{ marginTop: '20px' }}>
                     <Table>
                         <TableHead>
@@ -107,13 +132,11 @@ const StatusUpdate: React.FC = () => {
                                             label={status}
                                         />
                                     </TableCell>
-                                    <TableCell>
-                                        <input
-                                            type="number"
-                                            value={leadTime[status] || ''}
-                                            onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
-                                        />
-                                    </TableCell>
+                                    <input
+                                        type="number"
+                                        value={leadTime?.hasOwnProperty(status) ? leadTime[status] : ""}
+                                        onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
+                                    />
                                 </TableRow>
                             ))}
                         </TableBody>

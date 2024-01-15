@@ -5,22 +5,20 @@ import React, { useCallback } from 'react';
 import { UseQueryResult, useQuery } from 'react-query';
 import "react-datepicker/dist/react-datepicker.css";
 import debounce from 'lodash/debounce';
-import { FiltersState } from '@/pages/trucks';
+import { FiltersState } from '@/pages';
 
 type Props = {
     setFilterState: (values: any) => void;
     filtersState: FiltersState
 }
 export interface FiltersData {
-    vinData: string[],
     orderIdData: string[],
-    modelNumberData: string[],
-    stockNumberData: string[],
-    serialNumberData: string[]
+    deliveryLocationData: string[],
+    customerNameData: string[]
 }
 
 const fetchFilter = async () => {
-    const response = await axios.get(`/api/router?path=api/truck/filters`);
+    const response = await axios.get(`/api/router?path=api/order/filters`);
     return response.data;
 };
 
@@ -56,7 +54,7 @@ const FilterFormControl = ({ label, values, selectedValue, onFilterChange, onCle
     </FormControl>
 )
 
-const TruckTableFilters = ({ filtersState, setFilterState }: Props) => {
+const OrderTableFilters = ({ filtersState, setFilterState }: Props) => {
 
     const {
         data: filters,
@@ -95,39 +93,22 @@ const TruckTableFilters = ({ filtersState, setFilterState }: Props) => {
                     onClearClick={() => handleClearClick('orderId')}
                 />
                 <FilterFormControl
-                    label="Truck Number / VIN / SR Number"
-                    values={filters?.vinData}
-                    selectedValue={filtersState?.vin}
-                    onFilterChange={(value) => handleFilterStateChange('vin', value)}
-                    onClearClick={() => handleClearClick('vin')}
+                    label="Customer Name"
+                    values={filters?.customerNameData}
+                    selectedValue={filtersState?.customerName}
+                    onFilterChange={(value) => handleFilterStateChange('customerName', value)}
+                    onClearClick={() => handleClearClick('customerName')}
                 />
                 <FilterFormControl
-                    label="Serial Number"
-                    values={filters?.serialNumberData}
-                    selectedValue={filtersState?.serialNumber}
-                    onFilterChange={(value) => handleFilterStateChange('serialNumber', value)}
-                    onClearClick={() => handleClearClick('serialNumber')}
-                />
-            </Box>
-            <br />
-            <Box sx={{ display: 'flex', width: '100%' }}>
-                <FilterFormControl
-                    label="Stock Number"
-                    values={filters?.stockNumberData}
-                    selectedValue={filtersState?.stockNumber}
-                    onFilterChange={(value) => handleFilterStateChange('stockNumber', value)}
-                    onClearClick={() => handleClearClick('stockNumber')}
-                />
-                <FilterFormControl
-                    label="Model Number"
-                    values={filters?.modelNumberData}
-                    selectedValue={filtersState?.modelNumber}
-                    onFilterChange={(value) => handleFilterStateChange('modelNumber', value)}
-                    onClearClick={() => handleClearClick('modelNumber')}
+                    label="Delivery Location"
+                    values={filters?.deliveryLocationData}
+                    selectedValue={filtersState?.deliveryLocation}
+                    onFilterChange={(value) => handleFilterStateChange('deliveryLocation', value)}
+                    onClearClick={() => handleClearClick('deliveryLocation')}
                 />
             </Box>
         </div>
     )
 }
 
-export default TruckTableFilters;
+export default OrderTableFilters;

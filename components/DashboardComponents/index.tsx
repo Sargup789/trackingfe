@@ -1,12 +1,13 @@
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import DashboardTable from "./DashboardTable";
 import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { OrderData } from "@/pages";
+import { FiltersState, OrderData } from "@/pages";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import AddOrderDialog from "./AddOrderDialog";
+import OrderTableFilters from "../FilterComponents/OrderTableFilters";
 
 type Props = {
     dashboardData: OrderData[];
@@ -16,12 +17,15 @@ type Props = {
     setSize: (size: number) => void
     page: number
     size: number
+    setFilterState: (values: any) => void;
+    filtersState: FiltersState
 };
 
 const queryClient = new QueryClient();
-const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage, page, size }: Props) => {
+const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage, page, size, filtersState, setFilterState }: Props) => {
     const [addOrderDialogOpen, setAddOrderDialogOpen] = useState(false);
     const [orderDialogData, setOrderDialogData] = useState<OrderData | {}>({});
+    const [showFilters, setShowFilters] = useState(false);
     const [isViewMode, setIsViewMode] = useState(false);
 
     const viewOrder = (order: OrderData) => {
@@ -68,11 +72,30 @@ const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage,
         refetch();
     };
 
+    const ifFilterStateObjectNotNull = (obj: FiltersState) => {
+        return Object.entries(obj).some(([key, value]) => {
+            if (value === null || value === '') return false;
+            if (typeof value === 'object' && value.condition === "=" && value.value === null) return false;
+            return true;
+        });
+    }
+
     const router = useRouter()
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="m-6">
-                <Typography align='right'>
+            <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Button
+                    style={{
+                        borderRadius: 15,
+                        backgroundColor: "#E96820",
+                        fontSize: "13px"
+                    }}
+                    variant="contained"
+                    onClick={() => setShowFilters(prev => !prev)}
+                >
+                    {showFilters ? "Hide Filters" : "Show Filters"}
+                </Button>
+                <Typography align='left' style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Button
                         style={{
                             borderRadius: 15,
@@ -85,25 +108,30 @@ const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage,
                         Add Order
                     </Button>
                 </Typography>
-                <br />
-                <DashboardTable
-                    dashboardData={dashboardData}
-                    setPage={setPage}
-                    setSize={setSize}
-                    editOrder={editOrder}
-                    viewOrder={viewOrder}
-                    deleteOrder={deleteOrder}
-                    page={page}
-                    size={size}
-                />
-                <AddOrderDialog
-                    open={addOrderDialogOpen}
-                    isViewMode={isViewMode}
-                    orderDialogData={orderDialogData}
-                    handleClose={handleClose}
-                    onSubmit={onSubmit}
-                />
-            </div>
+            </Box>
+            {(showFilters || ifFilterStateObjectNotNull(filtersState)) && (
+                <Box sx={{ background: 'white', width: '100%', marginTop: '20px' }}>
+                    <OrderTableFilters setFilterState={setFilterState} filtersState={filtersState} />
+                </Box>
+            )}
+            <br />
+            <DashboardTable
+                dashboardData={dashboardData}
+                setPage={setPage}
+                setSize={setSize}
+                editOrder={editOrder}
+                viewOrder={viewOrder}
+                deleteOrder={deleteOrder}
+                page={page}
+                size={size}
+            />
+            <AddOrderDialog
+                open={addOrderDialogOpen}
+                isViewMode={isViewMode}
+                orderDialogData={orderDialogData}
+                handleClose={handleClose}
+                onSubmit={onSubmit}
+            />
         </QueryClientProvider>
     )
 }

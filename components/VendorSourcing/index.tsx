@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Radio, RadioGroup, Paper } from '@mui/material';
+import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Box, FormControlLabel, Radio, RadioGroup, Paper, IconButton } from '@mui/material';
 import axios from 'axios';
 import { ChecklistItemData, TruckData } from '@/pages/trucks';
+import { toast } from 'react-toastify';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const VendorSourcing: React.FC = () => {
-    const [vin, setVin] = useState<string>('');
+    const [stockNumber, setStockNumber] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<TruckData | null>(null);
 
     const headerMappings: any = {
@@ -15,10 +17,12 @@ const VendorSourcing: React.FC = () => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
+            const response = await axios.get(`/api/router?path=api/truck/stockNumber/${stockNumber}`);
+            toast.success("Accessories details registed with this stock number");
             setTruckDetails(response.data);
         } catch (error) {
             console.error('Error fetching truck details:', error);
+            toast.error("Truck not found registed with this stock number")
         }
     };
 
@@ -45,11 +49,18 @@ const VendorSourcing: React.FC = () => {
         }}>
             <Box style={{ display: 'flex', padding: '24px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <TextField
-                    label="Enter VIN"
+                    label="Enter Stock Number"
                     variant="outlined"
                     size='medium'
-                    value={vin}
-                    onChange={(e) => setVin(e.target.value)}
+                    value={stockNumber}
+                    InputProps={{
+                        endAdornment: (
+                            <>
+                                <IconButton onClick={() => { setStockNumber(''); setTruckDetails(null) }}><ClearIcon /></IconButton>
+                            </>
+                        )
+                    }}
+                    onChange={(e) => setStockNumber(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}
                     style={{
@@ -89,7 +100,7 @@ const VendorSourcing: React.FC = () => {
                                                     <TextField
                                                         value={value}
                                                         type="number"
-                                                        disabled={item.status === 'FULFILLED'}
+                                                        disabled={item.status === 'DELIVERED'}
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     />
                                                 </TableCell>
@@ -101,8 +112,9 @@ const VendorSourcing: React.FC = () => {
                                                         value={value}
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     >
-                                                        <FormControlLabel value="ORDERED" control={<Radio />} label="ORDERED" />
-                                                        <FormControlLabel value="FULFILLED" control={<Radio />} label="FULFILLED" />
+                                                        <FormControlLabel value="PO GENERATED" control={<Radio />} label="PO GENERATED" />
+                                                        {/* <FormControlLabel value="AWAITING DELIVERY" control={<Radio />} label="AWAITING DELIVERY" /> */}
+                                                        <FormControlLabel value="DELIVERED" control={<Radio />} label="ITEM RECEIVED" />
                                                     </RadioGroup>
                                                 </TableCell>
                                             );

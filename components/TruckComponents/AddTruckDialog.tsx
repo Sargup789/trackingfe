@@ -140,7 +140,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                 <Field name="orderId">
                                     {({ input }) => (
                                         <Box>
-                                            <Typography className="label">Order ID</Typography>
+                                            <Typography className="label">Quote Number / CRM Number</Typography>
                                             <FormControl fullWidth>
                                                 <Select
                                                     {...input}
@@ -160,12 +160,12 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                 <Field name="vin">
                                     {({ input }) => (
                                         <Box>
-                                            <Typography className="label">VIN</Typography>
+                                            <Typography className="label">Truck Number / VIN / SR Number</Typography>
                                             <TextField
                                                 {...input}
                                                 fullWidth
                                                 size="small"
-                                                placeholder="VIN"
+                                                placeholder="Truck Number / VIN / SR Number"
                                             />
                                         </Box>
                                     )}
@@ -211,7 +211,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                 </Field>
                             </Box>
                             <Box mt={3}>
-                                <Typography variant="h6" gutterBottom>Truck Accessories</Typography>
+                                <Typography variant="h6" gutterBottom>Truck Accessories Needed</Typography>
                                 <Grid container spacing={2}>
                                     {checklists.map((checklistItem) => (
                                         <Grid item xs={12} key={checklistItem.question}>

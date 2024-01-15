@@ -62,12 +62,12 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                                 <Field name="orderId">
                                     {({ input }) => (
                                         <Box>
-                                            <Typography className="label">Order ID</Typography>
+                                            <Typography className="label">Quote Number / CRM Number</Typography>
                                             <TextField
                                                 {...input}
                                                 fullWidth
                                                 size="small"
-                                                placeholder="Enter order id"
+                                                placeholder="Enter Quote Number / CRM Number"
                                             />
                                         </Box>
                                     )}
