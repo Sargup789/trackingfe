@@ -3,7 +3,7 @@ import { TextField, Button, Table, TableBody, TableCell, TableHead, TableRow, Bo
 import axios from 'axios';
 
 const StatusUpdate: React.FC = () => {
-    const [vin, setVin] = useState<string>('');
+    const [stockNumber, setStockNumber] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<any>(null);
     const [leadTime, setLeadTime] = useState<any>({});
     const [truckStatus, setStatus] = useState<any>('Retail Order Generated');
@@ -25,7 +25,7 @@ const StatusUpdate: React.FC = () => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
+            const response = await axios.get(`/api/router?path=api/truck/stockNumber/${stockNumber}`);
             setTruckDetails(response.data);
             setStatus(response.data.status)
             setLeadTime(response.data.leadTime);
@@ -68,11 +68,11 @@ const StatusUpdate: React.FC = () => {
         }}>
             <Box style={{ display: 'flex', padding: '24px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <TextField
-                    label="Enter VIN"
+                    label="Enter Stock Number"
                     variant="outlined"
                     size='medium'
-                    value={vin}
-                    onChange={(e) => setVin(e.target.value)}
+                    value={stockNumber}
+                    onChange={(e) => setStockNumber(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}
                     style={{
