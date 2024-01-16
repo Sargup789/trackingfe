@@ -1,10 +1,10 @@
-import { TruckData } from '@/pages/trucks';
+import { TruckApiResponse, TruckData } from '@/pages/trucks';
 import { DeleteOutline, EditOutlined, RemoveRedEyeOutlined } from '@mui/icons-material';
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
 interface Props {
-    truckData: TruckData[];
+    truckApiData: TruckApiResponse;
     deleteTruck: (id: string) => void;
     editTruck: (data: TruckData) => void;
     setPage: (page: number) => void;
@@ -16,10 +16,10 @@ interface Props {
 }
 
 export default function Truck({
-    truckData, deleteTruck, editTruck, setPage, setSize, page, size, viewTruck, onRowSelect
+    truckApiData, deleteTruck, editTruck, setPage, setSize, page, size, viewTruck, onRowSelect
 }: Props) {
 
-    if (!truckData) return (<div></div>)
+    if (!truckApiData.data) return (<div></div>)
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage + 1);  // +1 because backend pages are 1-indexed while material-ui's pagination is 0-indexed.
@@ -30,7 +30,7 @@ export default function Truck({
         setPage(1);  // reset to the first page whenever the rows per page size changes.
     };
 
-    const [accessoryStatus, setAccessoryStatus] = useState<number[]>(Array(truckData?.length).fill(0));
+    const [accessoryStatus, setAccessoryStatus] = useState<number[]>(Array(truckApiData?.data?.length).fill(0));
 
     const calculateAccessoryStatus = (checklist: any) => {
         if (!checklist || checklist.length === 0) {
@@ -57,7 +57,7 @@ export default function Truck({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {truckData.map((row, index) => {
+                        {truckApiData.data.map((row, index) => {
                             let statusCount = 0;
                             row.checklist.forEach(checklistItem => {
                                 if (checklistItem.answer === 'yes') {
@@ -107,7 +107,7 @@ export default function Truck({
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={truckData.length}
+                count={truckApiData.totalCount}
                 rowsPerPage={size}
                 page={page - 1}
                 onPageChange={handleChangePage}

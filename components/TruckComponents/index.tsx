@@ -2,14 +2,14 @@ import { Box, Button, Typography } from "@mui/material"
 import { useState } from "react";
 import AddTruckDialog from "./AddTruckDialog";
 import TruckTable from "./TruckTable"
-import { FiltersState, TruckData } from "@/pages/trucks";
+import { FiltersState, TruckApiResponse, TruckData } from "@/pages/trucks";
 import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 import TruckTableFilters from "../FilterComponents/TruckTableFilters";
 
 type Props = {
-    truckData: TruckData[];
+    truckApiData: TruckApiResponse;
     deleteTruck: (id: string) => void;
     refetch: () => void;
     setPage: (page: number) => void
@@ -21,7 +21,7 @@ type Props = {
 };
 const queryClient = new QueryClient();
 
-const TruckIndex = ({ truckData, deleteTruck, refetch, setPage, setSize, page, size, filtersState, setFilterState }: Props) => {
+const TruckIndex = ({ truckApiData, deleteTruck, refetch, setPage, setSize, page, size, filtersState, setFilterState }: Props) => {
     const [addTruckDialogOpen, setAddTruckDialogOpen] = useState(false);
     const [truckDialogData, setTruckDialogData] = useState<TruckData | {}>({});
     const [showFilters, setShowFilters] = useState(false);
@@ -122,7 +122,7 @@ const TruckIndex = ({ truckData, deleteTruck, refetch, setPage, setSize, page, s
             )}
             <br />
             <TruckTable
-                truckData={truckData}
+                truckApiData={truckApiData}
                 deleteTruck={deleteTruck}
                 editTruck={editTruck}
                 viewTruck={viewTruck}

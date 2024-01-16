@@ -12,6 +12,14 @@ export interface FiltersState {
   serialNumber: null | string,
   orderId: null | string
 };
+
+export interface TruckApiResponse {
+  totalCount: number;
+  page: number;
+  currentPage: number;
+  data: TruckData[];
+}
+
 export interface TruckData {
   id: string;
   orderId: string;
@@ -58,7 +66,7 @@ const Trucks = () => {
     data: trucks,
     isLoading,
     refetch,
-  }: UseQueryResult<TruckData[], unknown> = useQuery(["trucks", page, size, filtersState], () => fetchTrucks(page, size, filtersState), {
+  }: UseQueryResult<TruckApiResponse, unknown> = useQuery(["trucks", page, size, filtersState], () => fetchTrucks(page, size, filtersState), {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -76,7 +84,7 @@ const Trucks = () => {
         "Loading..."
       ) : (
         <TruckIndex
-          truckData={trucks}
+          truckApiData={trucks}
           deleteTruck={deleteTruck}
           refetch={refetch}
           setPage={setPage}

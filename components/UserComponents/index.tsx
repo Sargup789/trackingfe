@@ -2,12 +2,12 @@ import { Button, Typography } from "@mui/material"
 import { useState } from "react";
 import AddUserDialog from "./AddUserDialog";
 import UserTable from "./Usertable"
-import { UserData } from "@/pages/user";
+import { UserApiResponse, UserData } from "@/pages/user";
 import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
 
 type Props = {
-    userData: UserData[];
+    userApiData: UserApiResponse;
     deleteUser: (id: string) => void;
     refetch: () => void;
     setPage: (page: number) => void
@@ -18,7 +18,7 @@ type Props = {
 
 const queryClient = new QueryClient();
 
-const UserIndex = ({ userData, deleteUser, refetch, setPage, setSize, page, size }: Props) => {
+const UserIndex = ({ userApiData, deleteUser, refetch, setPage, setSize, page, size }: Props) => {
     const [addUserDialogOpen, setAddUserDialogOpen] = useState(false);
     const [userDialogData, setUserDialogData] = useState<UserData | {}>({});
 
@@ -72,7 +72,7 @@ const UserIndex = ({ userData, deleteUser, refetch, setPage, setSize, page, size
                 </Typography>
                 <br />
                 <UserTable
-                    userData={userData}
+                    userApiData={userApiData}
                     deleteUser={deleteUser}
                     page={page}
                     size={size}

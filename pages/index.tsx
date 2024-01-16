@@ -22,6 +22,13 @@ export interface OrderData {
   numberOfTrucks: number;
 }
 
+export interface OrderApiResponse {
+  totalCount: number;
+  page: number;
+  currentPage: number;
+  data: OrderData[];
+}
+
 const fetchOrders = async (page = 1, size = 10, filters = {}) => {
   console.log("fetchOrders", process.env.ROOT_URL);
   const response = await axios.get(`/api/router?path=api/order`, {
@@ -49,7 +56,7 @@ const index = () => {
     data: orders,
     isLoading,
     refetch,
-  }: UseQueryResult<OrderData[], unknown> = useQuery(["zones", page, size, filtersState], () => fetchOrders(page, size, filtersState), {
+  }: UseQueryResult<OrderApiResponse, unknown> = useQuery(["zones", page, size, filtersState], () => fetchOrders(page, size, filtersState), {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -65,7 +72,7 @@ const index = () => {
         "Loading..."
       ) : (
         <DashboardIndex
-          dashboardData={orders}
+          dashboardApiData={orders}
           deleteOrder={deleteOrder}
           setPage={setPage}
           setSize={setSize}

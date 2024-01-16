@@ -7,11 +7,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { IconButton, TablePagination, Tooltip } from '@mui/material';
-import { OrderData } from '@/pages';
+import { OrderApiResponse, OrderData } from '@/pages';
 import { DeleteOutline, EditOutlined, RemoveRedEyeOutlined } from '@mui/icons-material';
 
 interface Props {
-  dashboardData: OrderData[]
+  dashboardApiData: OrderApiResponse
   setPage: (page: number) => void
   editOrder: (data: OrderData) => void;
   viewOrder: (data: OrderData) => void;
@@ -21,8 +21,8 @@ interface Props {
   size: number
 }
 
-export default function DashboardTable({ dashboardData, editOrder, viewOrder, deleteOrder, setPage, setSize, page, size }: Props) {
-  if (!dashboardData) return (<div></div>)
+export default function DashboardTable({ dashboardApiData, editOrder, viewOrder, deleteOrder, setPage, setSize, page, size }: Props) {
+  if (!dashboardApiData.data) return (<div></div>)
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage + 1);  // +1 because backend pages are 1-indexed while material-ui's pagination is 0-indexed.
@@ -50,7 +50,7 @@ export default function DashboardTable({ dashboardData, editOrder, viewOrder, de
             </TableRow>
           </TableHead>
           <TableBody>
-            {dashboardData.map((orderRow) => (
+            {dashboardApiData.data.map((orderRow) => (
               <TableRow key={orderRow.id}>
                 <TableCell>{orderRow.orderId}</TableCell>
                 <TableCell align='center'>{orderRow.customerName}</TableCell>
@@ -89,7 +89,7 @@ export default function DashboardTable({ dashboardData, editOrder, viewOrder, de
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={dashboardData.length}
+        count={dashboardApiData.totalCount}
         rowsPerPage={size}
         page={page - 1}
         onPageChange={handleChangePage}

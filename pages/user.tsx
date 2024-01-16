@@ -13,6 +13,13 @@ export interface UserData {
     allowedApplication: string;
 }
 
+export interface UserApiResponse {
+    totalCount: number;
+    page: number;
+    currentPage: number;
+    data: UserData[];
+}
+
 const fetchUsers = async (page = 1, size = 10) => {
     console.log("fetchUsers", process.env.ROOT_URL);
     const response = await axios.get(`/api/router?path=api/auth/users`, {
@@ -33,7 +40,7 @@ const Users = () => {
         data: users,
         isLoading,
         refetch,
-    }: UseQueryResult<UserData[], unknown> = useQuery(["users", page, size], () => fetchUsers(page, size), {
+    }: UseQueryResult<UserApiResponse, unknown> = useQuery(["users", page, size], () => fetchUsers(page, size), {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
     });
@@ -49,7 +56,7 @@ const Users = () => {
                 "Loading..."
             ) : (
                 <UserIndex
-                    userData={users}
+                    userApiData={users}
                     deleteUser={deleteUser}
                     refetch={refetch}
                     page={page}

@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import DashboardTable from "./DashboardTable";
 import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { FiltersState, OrderData } from "@/pages";
+import { FiltersState, OrderApiResponse, OrderData } from "@/pages";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -10,7 +10,7 @@ import AddOrderDialog from "./AddOrderDialog";
 import OrderTableFilters from "../FilterComponents/OrderTableFilters";
 
 type Props = {
-    dashboardData: OrderData[];
+    dashboardApiData: OrderApiResponse;
     refetch: () => void;
     deleteOrder: (id: string) => void;
     setPage: (page: number) => void
@@ -22,7 +22,7 @@ type Props = {
 };
 
 const queryClient = new QueryClient();
-const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage, page, size, filtersState, setFilterState }: Props) => {
+const DashboardIndex = ({ dashboardApiData, deleteOrder, refetch, setSize, setPage, page, size, filtersState, setFilterState }: Props) => {
     const [addOrderDialogOpen, setAddOrderDialogOpen] = useState(false);
     const [orderDialogData, setOrderDialogData] = useState<OrderData | {}>({});
     const [showFilters, setShowFilters] = useState(false);
@@ -116,7 +116,7 @@ const DashboardIndex = ({ dashboardData, deleteOrder, refetch, setSize, setPage,
             )}
             <br />
             <DashboardTable
-                dashboardData={dashboardData}
+                dashboardApiData={dashboardApiData}
                 setPage={setPage}
                 setSize={setSize}
                 editOrder={editOrder}

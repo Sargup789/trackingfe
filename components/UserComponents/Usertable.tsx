@@ -1,4 +1,4 @@
-import { UserData } from '@/pages/user';
+import { UserApiResponse } from '@/pages/user';
 import { DeleteOutline, EditOutlined } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
 import Paper from '@mui/material/Paper';
@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import * as React from 'react';
 
 interface Props {
-    userData: UserData[]
+    userApiData: UserApiResponse
     deleteUser: (id: string) => void
     setPage: (page: number) => void
     setSize: (size: number) => void
@@ -22,7 +22,7 @@ interface Props {
 
 
 
-export default function UserTable({ userData, deleteUser, setPage, setSize, page, size }: Props) {
+export default function UserTable({ userApiData, deleteUser, setPage, setSize, page, size }: Props) {
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage + 1);  // Backend might be 1-indexed, but Material-UI pagination is 0-indexed.
@@ -33,7 +33,7 @@ export default function UserTable({ userData, deleteUser, setPage, setSize, page
         setPage(1);  // Reset to the first page when rows per page change.
     };
 
-    if (!userData) return (<div>Loading...</div>)
+    if (!userApiData.data) return (<div>Loading...</div>)
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -48,7 +48,7 @@ export default function UserTable({ userData, deleteUser, setPage, setSize, page
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {userData.map((historyRow) => (
+                        {userApiData.data.map((historyRow) => (
                             <TableRow key={historyRow.id}>
                                 <TableCell component="th" scope="row">
                                     {historyRow.username}
@@ -81,7 +81,7 @@ export default function UserTable({ userData, deleteUser, setPage, setSize, page
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={userData.length}
+                count={userApiData.totalCount}
                 rowsPerPage={size}
                 page={page - 1}
                 onPageChange={handleChangePage}
