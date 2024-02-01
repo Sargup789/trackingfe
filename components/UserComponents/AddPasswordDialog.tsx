@@ -29,6 +29,10 @@ const AddPasswordDialog: React.FC<UserDialogProps> = ({
                     sx={{
                         display: "flex",
                         alignItems: "center",
+                        cursor: "pointer",
+                        "&:hover": {
+                            color: "primary.main",
+                        },
                     }}
                 >
                     Reset Password
@@ -74,6 +78,7 @@ const AddPasswordDialog: React.FC<UserDialogProps> = ({
                                             <Typography className="label">Old-Password</Typography>
                                             <TextField
                                                 {...input}
+                                                type="password"
                                                 fullWidth
                                                 size="small"
                                                 placeholder="Enter old-password"
@@ -87,6 +92,7 @@ const AddPasswordDialog: React.FC<UserDialogProps> = ({
                                             <Typography className="label">New-Password</Typography>
                                             <TextField
                                                 {...input}
+                                                type="password"
                                                 fullWidth
                                                 size="small"
                                                 placeholder="Enter new-password"

@@ -4,9 +4,9 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { setTokenCookie } from '@/lib/auth-cookie';
 import AddPasswordDialog from '@/components/UserComponents/AddPasswordDialog';
+import { toast } from 'react-toastify';
 
 export interface PasswordData {
-    id: string;
     username: string;
     oldPassword: string;
     newPassword: string;
@@ -26,27 +26,19 @@ const LoginModal: React.FC = () => {
     };
 
     const onSubmit = async (data: PasswordData) => {
-        console.log(data, 'data')
-        if (Object.keys(resetPasswordDialogData).length > 0) {
-            const { id, ...rest } = data;
-            try {
-                const response = await axios.put(
-                    `/api/auth/reset-password`,
-                    rest
-                );
-                console.log(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            try {
-                const response = await axios.post(`/api/auth/reset-password`, data);
-                console.log(response.data);
-            } catch (error) {
-                console.error(error);
-            }
+        try {
+            const response = await axios.post(`/api/router?path=api/auth/reset-password`, data);
+            console.log(response.data?.message + ". Please login again" || 'Reset password successful');
+            setUsername(data.username)
+            setPassword(data.newPassword)
+            handleLogin()
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || 'Reset password failed');
+            console.error(error);
         }
-        handleClose();
+        finally {
+            handleClose()
+        }
     };
 
     const handleLogin = async () => {
@@ -59,7 +51,8 @@ const LoginModal: React.FC = () => {
             let isSameDomain = false;
             try {
                 isSameDomain = new URL(window.document.referrer).origin === window.location.origin;
-            } catch (err) {
+            } catch (err: any) {
+                toast.error(err.response?.data?.message || 'Not able to login. Please check username and password');
                 console.warn("Invalid or empty referrer");
             }
             if (typeof window !== 'undefined' && window.history.length > 2 && isSameDomain) {
@@ -107,9 +100,18 @@ const LoginModal: React.FC = () => {
                 </DialogContent>
                 <DialogActions>
                     <Box style={{ display: 'flex', width: '95%', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div onClick={() => setResetPasswordDialogOpen(true)}>
+                        <Button
+                            onClick={() => setResetPasswordDialogOpen(true)}
+                            style={{
+                                borderRadius: 15,
+                                backgroundColor: "grey",
+                                fontSize: "13px"
+                            }}
+                            variant="contained"
+                        >
                             Reset Password
-                        </div>
+
+                        </Button>
                         <Button
                             style={{
                                 borderRadius: 15,
