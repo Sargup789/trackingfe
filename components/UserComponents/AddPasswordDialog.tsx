@@ -1,3 +1,4 @@
+import { PasswordData } from "@/pages/login";
 import { UserData } from "@/pages/user";
 import { HighlightOff } from "@mui/icons-material";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
@@ -7,9 +8,9 @@ interface UserDialogProps {
     open: boolean;
     handleClose: () => void;
     userDialogData: UserData | {};
-    onSubmit: (values: UserData) => void;
+    onSubmit: (values: PasswordData) => void;
 }
-const AddUserDialog: React.FC<UserDialogProps> = ({
+const AddPasswordDialog: React.FC<UserDialogProps> = ({
     open,
     handleClose,
     userDialogData,
@@ -30,7 +31,7 @@ const AddUserDialog: React.FC<UserDialogProps> = ({
                         alignItems: "center",
                     }}
                 >
-                    Add User
+                    Reset Password
                 </Box>
                 <IconButton
                     children={<HighlightOff />}
@@ -67,28 +68,29 @@ const AddUserDialog: React.FC<UserDialogProps> = ({
                                         </Box>
                                     )}
                                 </Field>
-                                <Field name="password">
+                                <Field name="oldPassword">
                                     {({ input }) => (
                                         <Box>
-                                            <Typography className="label">Password</Typography>
+                                            <Typography className="label">Old-Password</Typography>
                                             <TextField
                                                 {...input}
                                                 fullWidth
                                                 size="small"
-                                                placeholder="Enter password"
+                                                placeholder="Enter old-password"
                                             />
                                         </Box>
                                     )}
                                 </Field>
-                                <Field name="role">
+                                <Field name="newPassword">
                                     {({ input }) => (
                                         <Box>
-                                            <Typography className="label">Role</Typography>
-                                            <Select {...input} fullWidth>
-                                                <MenuItem value="administrator">Administrator</MenuItem>
-                                                <MenuItem value="editor">Manager</MenuItem>
-                                                <MenuItem value="viewer">Operator</MenuItem>
-                                            </Select>
+                                            <Typography className="label">New-Password</Typography>
+                                            <TextField
+                                                {...input}
+                                                fullWidth
+                                                size="small"
+                                                placeholder="Enter new-password"
+                                            />
                                         </Box>
                                     )}
                                 </Field>
@@ -114,4 +116,4 @@ const AddUserDialog: React.FC<UserDialogProps> = ({
     )
 }
 
-export default AddUserDialog
+export default AddPasswordDialog
