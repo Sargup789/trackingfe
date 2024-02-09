@@ -46,9 +46,12 @@ const ViewStatus: React.FC = () => {
     const displayCheckListTable = (item: ChecklistItemData[]) => {
         return item?.map((singleItem) => singleItem.answer === 'yes' && <div className='flex flex-col'><p>{singleItem.question} - {singleItem.status === "DELIVERED"
             ? 'ITEM RECEIVED'
-            : singleItem.status
-                ? 'PO GENERATED'
-                : 'N/A'}</p></div>)
+            : singleItem.status === "AWAITING DELIVERY"
+                ? "WORK ORDER GENERATED"
+                : singleItem.status
+                    ? " PO GENERATED"
+                    : "N/A"
+        }</p></div>)
     }
 
     return (

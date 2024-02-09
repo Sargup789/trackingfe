@@ -36,7 +36,7 @@ const StatusUpdate: React.FC = () => {
 
     const headerMappings: any = {
         status: "Status Update",
-        leadTime: "Lead Time (No. of Days)"
+        leadTime: "Date (MM/DD/YYYY)"
     };
 
     const handleSearch = async () => {

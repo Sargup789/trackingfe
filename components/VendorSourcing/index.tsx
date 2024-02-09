@@ -11,7 +11,7 @@ const VendorSourcing: React.FC = () => {
 
     const headerMappings: any = {
         question: "Components",
-        leadTime: "Lead Time (No. of Days)",
+        leadTime: "ETA Date (MM/DD/YYYY)",
         status: "Status"
     };
 
@@ -99,7 +99,7 @@ const VendorSourcing: React.FC = () => {
                                                 <TableCell key={idx}>
                                                     <TextField
                                                         value={value}
-                                                        type="number"
+                                                        // type="number"
                                                         disabled={item.status === 'DELIVERED'}
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     />
@@ -113,7 +113,7 @@ const VendorSourcing: React.FC = () => {
                                                         onChange={(e) => handleUpdateChecklist(index, key as keyof ChecklistItemData, e.target.value)}
                                                     >
                                                         <FormControlLabel value="PO GENERATED" control={<Radio />} label="PO GENERATED" />
-                                                        {/* <FormControlLabel value="AWAITING DELIVERY" control={<Radio />} label="AWAITING DELIVERY" /> */}
+                                                        <FormControlLabel value="AWAITING DELIVERY" control={<Radio />} label="WORK ORDER GENERATED" /> 
                                                         <FormControlLabel value="DELIVERED" control={<Radio />} label="ITEM RECEIVED" />
                                                     </RadioGroup>
                                                 </TableCell>
