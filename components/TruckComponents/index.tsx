@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button, Tooltip, Typography } from "@mui/material"
 import { useState } from "react";
 import AddTruckDialog from "./AddTruckDialog";
 import TruckTable from "./TruckTable"
@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 import TruckTableFilters from "../FilterComponents/TruckTableFilters";
+import xlsx from "json-as-xlsx";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 type Props = {
     truckApiData: TruckApiResponse;
@@ -27,12 +29,37 @@ const TruckIndex = ({ truckApiData, deleteTruck, refetch, setPage, setSize, page
     const [showFilters, setShowFilters] = useState(false);
     const [isViewMode, setIsViewMode] = useState(false);
 
+    const downloadFile = () => {
+        let data = [
+            {
+                sheet: "Data",
+                columns: [
+                    { label: "Quote Number", value: 'orderId' },
+                    { label: "Truck Number", value: 'vin' },
+                    { label: "Vehicle Model", value: 'modelNumber' },
+                    { label: "Serial Number", value: 'serialNumber' },
+                    { label: "Stock Number", value: 'stockNumber' },
+                    { label: "Status", value: 'status' },
+                ],
+                content: truckApiData.data.map((data) => {
+                    return {
+                        orderId: data.orderId, vin: data.vin, modelNumber: data.modelNumber,
+                        serialNumber: data.serialNumber, stockNumber: data.stockNumber, status: data.status
+                    }
+                })
+            }
+        ]
+        let settings = {
+            fileName: "TrackingData",
+        }
+        xlsx(data, settings)
+    }
+
     const viewTruck = (zone: TruckData) => {
         setTruckDialogData(zone);
         setAddTruckDialogOpen(true);
         setIsViewMode(true);
     }
-
 
     const editTruck = (zone: TruckData) => {
         setTruckDialogData(zone);
@@ -44,7 +71,6 @@ const TruckIndex = ({ truckApiData, deleteTruck, refetch, setPage, setSize, page
         setTruckDialogData({});
         setIsViewMode(false);
     };
-
 
     const onSubmit = async (data: TruckData) => {
         if (Object.keys(truckDialogData).length > 0) {
@@ -81,7 +107,6 @@ const TruckIndex = ({ truckApiData, deleteTruck, refetch, setPage, setSize, page
         });
     }
 
-
     return (
         <QueryClientProvider client={queryClient}>
             <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -108,11 +133,11 @@ const TruckIndex = ({ truckApiData, deleteTruck, refetch, setPage, setSize, page
                     >
                         Add Truck
                     </Button>
-                    {/* <Tooltip style={{
+                    <Tooltip style={{
                         margin: "18px 20px",
                     }} title="Export to Excel" onClick={downloadFile}>
                         <FileDownloadIcon />
-                    </Tooltip> */}
+                    </Tooltip>
                 </Typography>
             </Box>
             {(showFilters || ifFilterStateObjectNotNull(filtersState)) && (

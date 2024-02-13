@@ -110,7 +110,6 @@ const LoginModal: React.FC = () => {
                             variant="contained"
                         >
                             Reset Password
-
                         </Button>
                         <Button
                             style={{

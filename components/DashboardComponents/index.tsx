@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
 import DashboardTable from "./DashboardTable";
 import { useRouter } from "next/router";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -8,6 +8,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import AddOrderDialog from "./AddOrderDialog";
 import OrderTableFilters from "../FilterComponents/OrderTableFilters";
+import xlsx from "json-as-xlsx";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 type Props = {
     dashboardApiData: OrderApiResponse;
@@ -27,6 +29,34 @@ const DashboardIndex = ({ dashboardApiData, deleteOrder, refetch, setSize, setPa
     const [orderDialogData, setOrderDialogData] = useState<OrderData | {}>({});
     const [showFilters, setShowFilters] = useState(false);
     const [isViewMode, setIsViewMode] = useState(false);
+
+    const downloadFile = () => {
+        let data = [
+            {
+                sheet: "Data",
+                columns: [
+                    { label: "Quote Number", value: 'orderId' },
+                    { label: "Company Name", value: 'customerName' },
+                    { label: "Phone No.", value: 'customerPhone' },
+                    { label: "Email Id", value: 'customerEmail' },
+                    { label: "Company Address", value: 'customerAddress' },
+                    { label: "No. of trucks", value: 'numberOfTrucks' },
+                    { label: "Delivery Location", value: 'deliveryLocation' },
+                ],
+                content: dashboardApiData.data.map((data) => {
+                    return {
+                        orderId: data.orderId, customerName: data.customerName, customerPhone: data.customerPhone,
+                        customerEmail: data.customerEmail, customerAddress: data.customerAddress, numberOfTrucks: data.numberOfTrucks,
+                        deliveryLocation: data.deliveryLocation
+                    }
+                })
+            }
+        ]
+        let settings = {
+            fileName: "OrderData",
+        }
+        xlsx(data, settings)
+    }
 
     const viewOrder = (order: OrderData) => {
         setOrderDialogData(order);
@@ -107,6 +137,11 @@ const DashboardIndex = ({ dashboardApiData, deleteOrder, refetch, setSize, setPa
                     >
                         Add Order
                     </Button>
+                    <Tooltip style={{
+                        margin: "18px 20px",
+                    }} title="Export to Excel" onClick={downloadFile}>
+                        <FileDownloadIcon />
+                    </Tooltip>
                 </Typography>
             </Box>
             {(showFilters || ifFilterStateObjectNotNull(filtersState)) && (
