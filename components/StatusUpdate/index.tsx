@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { toast } from 'react-toastify';
 
 const StatusUpdate: React.FC = () => {
-    const [stockNumber, setStockNumber] = useState<string>('');
+    const [vin, setVin] = useState<string>('');
     const [truckDetails, setTruckDetails] = useState<any>(null);
     const [leadTime, setLeadTime] = useState<any>({
         RETAIL_ORDER_GENERATED: 0,
@@ -41,8 +41,8 @@ const StatusUpdate: React.FC = () => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`/api/router?path=api/truck/stockNumber/${stockNumber}`);
-            toast.success("Status details registered with this stocknumber");
+            const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
+            toast.success("Status details registered with this truck number");
             setTruckDetails(response.data);
             setStatus(response.data.status)
             setLeadTime(response.data.leadTime);
@@ -86,18 +86,18 @@ const StatusUpdate: React.FC = () => {
         }}>
             <Box style={{ display: 'flex', padding: '24px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
                 <TextField
-                    label="Enter Stock Number"
+                    label="Enter Truck Number"
                     variant="outlined"
                     size='medium'
-                    value={stockNumber}
+                    value={vin}
                     InputProps={{
                         endAdornment: (
                             <>
-                                <IconButton onClick={() => { setStockNumber(''); setTruckDetails(null) }}><ClearIcon /></IconButton>
+                                <IconButton onClick={() => { setVin(''); setTruckDetails(null) }}><ClearIcon /></IconButton>
                             </>
                         )
                     }}
-                    onChange={(e) => setStockNumber(e.target.value)}
+                    onChange={(e) => setVin(e.target.value)}
                 />
                 <Button variant="contained" color="primary" onClick={handleSearch}
                     style={{
