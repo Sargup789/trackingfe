@@ -1,7 +1,10 @@
 import { OrderData } from "@/pages";
 import { HighlightOff } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Field, Form } from "react-final-form";
+import { DropdownMaster } from "../types";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface UserDialogProps {
     open: boolean;
@@ -18,6 +21,37 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
     onSubmit,
 }) => {
     const isEditMode = Object.keys(orderDialogData).length > 0;
+    const [dropdowns, setDropdowns] = useState<DropdownMaster[]>([]);
+
+    const customOnSubmit = (values: any) => {
+        values.dropdownData = dropdowns.map((dropdown) => ({
+            dropdownId: dropdown.id,
+            dropdownName: dropdown.dropdownName,
+            selectedValue: values[`dropdown_${dropdown.id}`]
+        }));
+        onSubmit(values);
+    };
+
+    const getAllDropdowns = async () => {
+        const response = await axios.get(`/api/router?path=api/dropdownmaster`);
+        return response.data;
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const dropdownData = await getAllDropdowns();
+                setDropdowns(dropdownData);
+            } catch (error) {
+                console.error("Failed to fetch data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const territoryManagerValues = dropdowns.find((dropdown: DropdownMaster) => dropdown.dropdownName === 'territoryManager')
+    const managerValues = dropdowns.find((dropdown: DropdownMaster) => dropdown.dropdownName === 'manager')
+
     return (
         <Dialog maxWidth="sm" fullWidth open={open} onClose={handleClose}>
             <DialogTitle
@@ -45,7 +79,7 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
             <DialogContent>
                 <Form
                     initialValues={orderDialogData}
-                    onSubmit={onSubmit}
+                    onSubmit={customOnSubmit}
                     render={({ handleSubmit, values }) => (
                         <form onSubmit={handleSubmit}>
                             <Box
@@ -83,45 +117,6 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                                         </Box>
                                     )}
                                 </Field>
-                                <Field name="customerAddress">
-                                    {({ input }) => (
-                                        <Box>
-                                            <Typography className="label">Customer Address</Typography>
-                                            <TextField
-                                                {...input}
-                                                fullWidth
-                                                size="small"
-                                                placeholder="Enter address"
-                                            />
-                                        </Box>
-                                    )}
-                                </Field>
-                                <Field name="customerPhone">
-                                    {({ input }) => (
-                                        <Box>
-                                            <Typography className="label">Customer Phone</Typography>
-                                            <TextField
-                                                {...input}
-                                                fullWidth
-                                                size="small"
-                                                placeholder="Enter phone no."
-                                            />
-                                        </Box>
-                                    )}
-                                </Field>
-                                <Field name="customerEmail">
-                                    {({ input }) => (
-                                        <Box>
-                                            <Typography className="label">Customer Email</Typography>
-                                            <TextField
-                                                {...input}
-                                                fullWidth
-                                                size="small"
-                                                placeholder="Enter email id"
-                                            />
-                                        </Box>
-                                    )}
-                                </Field>
                                 <Field name="numberOfTrucks">
                                     {({ input }) => (
                                         <Box>
@@ -145,6 +140,34 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                                                 size="small"
                                                 placeholder="Enter location"
                                             />
+                                        </Box>
+                                    )}
+                                </Field>
+                                <Field name="territoryManager">
+                                    {({ input }) => (
+                                        <Box>
+                                            <Typography className="label">Territory Manager</Typography>
+                                            <Select {...input} fullWidth>
+                                                {territoryManagerValues?.options.map(option => (
+                                                    <MenuItem key={option.key} value={option.key}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </Box>
+                                    )}
+                                </Field>
+                                <Field name="manager">
+                                    {({ input }) => (
+                                        <Box>
+                                            <Typography className="label">Manager</Typography>
+                                            <Select {...input} fullWidth>
+                                                {managerValues?.options.map(option => (
+                                                    <MenuItem key={option.key} value={option.key}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
                                         </Box>
                                     )}
                                 </Field>
