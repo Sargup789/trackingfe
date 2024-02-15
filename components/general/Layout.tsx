@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import PeopleIcon from '@mui/icons-material/People';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import ChecklistRoundedIcon from '@mui/icons-material/ChecklistRounded';
+import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined';
 import { Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled, Toolbar, Typography } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import PageviewOutlinedIcon from '@mui/icons-material/PageviewOutlined';
@@ -21,6 +22,7 @@ const drawerItems = [
   { name: 'Vendor Sourcing', path: '/vendorsourcing' },
   { name: 'Status Update', path: '/statusupdate' },
   { name: 'Users', path: '/user' },
+  { name: 'Dropdown Master', path: '/dropdownmaster' },
   { name: 'Checklist', path: '/checklist' },
 ]
 
@@ -157,7 +159,9 @@ const Layout = ({ children }: Props) => {
                             ? <CabinIcon />
                             : index === 5
                               ? <PeopleIcon />
-                              : <ChecklistRoundedIcon />
+                              : index === 6
+                                ? <ArrowDropDownCircleOutlinedIcon />
+                                : <ChecklistRoundedIcon />
                   }                </ListItemIcon>
                 <ListItemText primary={item.name} />
               </ListItemButton>
