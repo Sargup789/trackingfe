@@ -10,6 +10,8 @@ export interface FiltersState {
   orderId: null | string,
   customerName: null | string,
   deliveryLocation: null | string,
+  manager: null | string,
+  territoryManager: null | string
 };
 export interface OrderData {
   id: string;
@@ -48,7 +50,9 @@ const index = () => {
   const [filtersState, setFilterState] = React.useState<FiltersState>({
     orderId: null,
     customerName: null,
-    deliveryLocation: null
+    deliveryLocation: null,
+    manager: null,
+    territoryManager: null
   })
 
   const {

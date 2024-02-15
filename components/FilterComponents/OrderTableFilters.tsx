@@ -14,7 +14,9 @@ type Props = {
 export interface FiltersData {
     orderIdData: string[],
     deliveryLocationData: string[],
-    customerNameData: string[]
+    customerNameData: string[],
+    managers: string[],
+    territoryManagers: string[]
 }
 
 const fetchFilter = async () => {
@@ -105,6 +107,23 @@ const OrderTableFilters = ({ filtersState, setFilterState }: Props) => {
                     selectedValue={filtersState?.deliveryLocation}
                     onFilterChange={(value) => handleFilterStateChange('deliveryLocation', value)}
                     onClearClick={() => handleClearClick('deliveryLocation')}
+                />
+            </Box>
+            <br/>
+            <Box sx={{ display: 'flex', width: '100%' }}>
+                <FilterFormControl
+                    label="Territory Managers"
+                    values={filters?.territoryManagers}
+                    selectedValue={filtersState?.territoryManager}
+                    onFilterChange={(value) => handleFilterStateChange('territoryManager', value)}
+                    onClearClick={() => handleClearClick('territoryManager')}
+                />
+                <FilterFormControl
+                    label="Managers"
+                    values={filters?.managers}
+                    selectedValue={filtersState?.manager}
+                    onFilterChange={(value) => handleFilterStateChange('manager', value)}
+                    onClearClick={() => handleClearClick('manager')}
                 />
             </Box>
         </div>
