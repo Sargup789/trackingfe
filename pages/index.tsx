@@ -15,10 +15,9 @@ export interface OrderData {
   id: string;
   orderId: string;
   customerName: string;
-  customerAddress: string;
+  territoryManager: string;
   deliveryLocation: string;
-  customerPhone: string;
-  customerEmail: string;
+  manager: string;
   numberOfTrucks: number;
 }
 

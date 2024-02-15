@@ -42,8 +42,8 @@ export default function DashboardTable({ dashboardApiData, editOrder, viewOrder,
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>Quote Number</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Company Name</TableCell>
-              <TableCell align="center" sx={{ fontWeight: 'bold' }}>Phone No.</TableCell>
-              <TableCell align="center" sx={{ fontWeight: 'bold' }}>Email Id</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>Territory Manager</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold' }}>Manager</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>No. of trucks</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Delivery Location</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold' }}>Actions</TableCell>
@@ -54,8 +54,8 @@ export default function DashboardTable({ dashboardApiData, editOrder, viewOrder,
               <TableRow key={orderRow.id}>
                 <TableCell>{orderRow.orderId}</TableCell>
                 <TableCell align='center'>{orderRow.customerName}</TableCell>
-                <TableCell align='center'>{orderRow.customerPhone}</TableCell>
-                <TableCell align='center'>{orderRow.customerEmail}</TableCell>
+                <TableCell align='center'>{orderRow.territoryManager}</TableCell>
+                <TableCell align='center'>{orderRow.manager}</TableCell>
                 <TableCell align='center'>{orderRow.numberOfTrucks}</TableCell>
                 <TableCell align='center'>{orderRow.deliveryLocation}</TableCell>
                 <TableCell align='center'>

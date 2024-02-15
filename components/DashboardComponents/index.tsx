@@ -37,16 +37,16 @@ const DashboardIndex = ({ dashboardApiData, deleteOrder, refetch, setSize, setPa
                 columns: [
                     { label: "Quote Number", value: 'orderId' },
                     { label: "Company Name", value: 'customerName' },
-                    { label: "Phone No.", value: 'customerPhone' },
-                    { label: "Email Id", value: 'customerEmail' },
+                    { label: "Territory Manager", value: 'territoryManager' },
+                    { label: "Manager", value: 'manager' },
                     { label: "Company Address", value: 'customerAddress' },
                     { label: "No. of trucks", value: 'numberOfTrucks' },
                     { label: "Delivery Location", value: 'deliveryLocation' },
                 ],
                 content: dashboardApiData.data.map((data) => {
                     return {
-                        orderId: data.orderId, customerName: data.customerName, customerPhone: data.customerPhone,
-                        customerEmail: data.customerEmail, customerAddress: data.customerAddress, numberOfTrucks: data.numberOfTrucks,
+                        orderId: data.orderId, customerName: data.customerName, territoryManager: data.territoryManager,
+                        manager: data.manager, numberOfTrucks: data.numberOfTrucks,
                         deliveryLocation: data.deliveryLocation
                     }
                 })
