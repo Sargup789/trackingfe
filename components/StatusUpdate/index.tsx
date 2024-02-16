@@ -42,7 +42,7 @@ const StatusUpdate: React.FC = () => {
     const handleSearch = async () => {
         try {
             const response = await axios.get(`/api/router?path=api/truck/vin/${vin}`);
-            toast.success("Status details registered with this truck number");
+            // toast.success("Status details registered with this truck number");
             setTruckDetails(response.data);
             setStatus(response.data.status)
             setLeadTime(response.data.leadTime);
@@ -132,11 +132,12 @@ const StatusUpdate: React.FC = () => {
                                             label={status}
                                         />
                                     </TableCell>
-                                    <input
-                                        type="number"
-                                        value={leadTime?.hasOwnProperty(status) ? leadTime[status] : ""}
-                                        onChange={(e) => handleLeadTimeChange(status, parseInt(e.target.value, 10))}
-                                    />
+                                    <TableCell>
+                                        <TextField
+                                            value={leadTime?.hasOwnProperty(status) ? leadTime[status] : ""}
+                                            onChange={(e: any) => handleLeadTimeChange(status, e.target.value)}
+                                        />
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -51,7 +51,7 @@ const ViewStatus: React.FC = () => {
                 : singleItem.status
                     ? " PO GENERATED"
                     : "N/A"
-        }</p></div>)
+        } - {singleItem.leadTime}</p></div>)
     }
 
     return (
