@@ -29,7 +29,7 @@ export interface TruckData {
   checklist: ChecklistItemData[];
   serialNumber: string;
   status: string;
-  leadTime: number;
+  leadTime: { [key: string]: number;};
 }
 export interface ChecklistItemData {
   question: string;

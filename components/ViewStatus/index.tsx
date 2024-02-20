@@ -51,8 +51,18 @@ const ViewStatus: React.FC = () => {
                 : singleItem.status
                     ? " PO GENERATED"
                     : "N/A"
-        } - {singleItem.leadTime}</p></div>)
+        } - ETA: {singleItem.leadTime || "N/A"}</p></div>)
     }
+
+    const getStatusWithLeadTime = (truck: TruckData) => {
+        // Check if the status is present in the leadTime object
+        if (truck?.leadTime && truck.status && truck.leadTime[truck.status]) {
+            // Extract lead time for the current status
+            return `${truck.status}- ${truck.leadTime[truck.status]}`;
+        } else {
+            return `${truck.status}`;
+        }
+    };     
 
     return (
         <Box sx={{ padding: 3, backgroundColor: 'white', borderRadius: 2 }}>
@@ -122,7 +132,7 @@ const ViewStatus: React.FC = () => {
                                     <TableCell align='center'>{truck.modelNumber}</TableCell>
                                     <TableCell align='center'>{truck.serialNumber}</TableCell>
                                     <TableCell align='center'>{truck.stockNumber}</TableCell>
-                                    <TableCell align='center'>{truck.status}</TableCell>
+                                    <TableCell align='center'>{getStatusWithLeadTime(truck)}</TableCell>
                                     <TableCell align='left'>
                                         {displayCheckListTable(truck.checklist)}
                                         {/* {truck.checklist
