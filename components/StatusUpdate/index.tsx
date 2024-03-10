@@ -23,7 +23,7 @@ const StatusUpdate: React.FC = () => {
 
     const possibleStatuses = {
         RETAIL_ORDER_GENERATED: "Retail Order Generated",
-        IN_PRODUCTION_WITH_TMH: "In Production with TMH",
+        IN_PRODUCTION_WITH_TMH: "Production ETA",
         STOCK_UNIT_ON_FLOOR: "Stock Unit on the Floor",
         SHIPPED_TO_TLNW: "Received at Toyota Lift Northwest",
         LEASE_DOC_TM: "⁠Lease Docs/Proforma sent to TM",

@@ -25,11 +25,12 @@ export interface TruckData {
   orderId: string;
   vin: string;
   modelNumber: string;
+  customerName: string;
   stockNumber: string;
   checklist: ChecklistItemData[];
   serialNumber: string;
   status: string;
-  leadTime: { [key: string]: number;};
+  leadTime: { [key: string]: number; };
 }
 export interface ChecklistItemData {
   question: string;

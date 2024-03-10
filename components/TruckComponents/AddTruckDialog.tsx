@@ -1,11 +1,10 @@
 import { TruckData } from "@/pages/trucks";
 import { HighlightOff } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormLabel, Grid, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Field, Form } from "react-final-form";
 import { useEffect, useState } from "react";
 import React from 'react';
 import "react-datepicker/dist/react-datepicker.css";
-import { Checklist } from "../types";
 import axios from "axios";
 
 interface TruckDialogProps {
@@ -24,7 +23,6 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
     onSubmit,
 }) => {
     const isEditMode = Object.keys(truckDialogData).length > 0;
-    const [checklists, setChecklists] = useState<Checklist[]>([]);
     const [orderIds, setOrderIds] = useState([]);
 
     const formatDate = (date: Date) => {
@@ -47,57 +45,16 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
         fetchOrderIds();
     }, [handleClose]);
 
-    const toSlugFormat = (str: string) => {
-        return str.toLowerCase().replace(/\s+/g, '-');
-    };
-
     const customHandleClose = () => {
         handleClose();
     };
 
     const customOnSubmit = (values: any) => {
-        values.checklist = checklists.map((item) => ({
-            question: item.question,
-            answer: values[`checklist_${toSlugFormat(item.question)}`],
-            isActive: item.isActive
-        }));
         onSubmit(values);
     };
 
-    const getAllChecklists = async () => {
-        const response = await axios.get(`/api/router?path=api/checklist`);
-        return response.data;
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const checklistData = await getAllChecklists();
-                setChecklists(checklistData);
-            } catch (error) {
-                console.error("Failed to fetch data:", error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const transformTruckDataForForm = (truckData: TruckData | {}) => {
-        if (Object.keys(truckData).length === 0) return {}
-        const transformedData: any = { ...truckData };
-        if ((truckData as TruckData).checklist) {
-            (truckData as TruckData).checklist.forEach(item => {
-                if (item && item.question) {
-                    const slug = toSlugFormat(item.question);
-                    transformedData[`checklist_${slug}`] = item.answer;
-                }
-            });
-        }
-        return transformedData;
-    };
-
     return (
-        <Dialog maxWidth="lg" fullWidth open={open} onClose={customHandleClose}>
+        <Dialog maxWidth="sm" fullWidth open={open} onClose={customHandleClose}>
             <DialogTitle
                 sx={{
                     display: "flex",
@@ -122,9 +79,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
             </DialogTitle>
             <DialogContent>
                 <Form
-                    initialValues={{
-                        ...transformTruckDataForForm(truckDialogData),
-                    }}
+                    initialValues={truckDialogData}
                     onSubmit={customOnSubmit}
                     render={({ handleSubmit, values }) => {
                         return <form onSubmit={handleSubmit}>
@@ -170,19 +125,6 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                         </Box>
                                     )}
                                 </Field>
-                                <Field name="modelNumber">
-                                    {({ input }) => (
-                                        <Box>
-                                            <Typography className="label">Model Number</Typography>
-                                            <TextField
-                                                {...input}
-                                                fullWidth
-                                                size="small"
-                                                placeholder="Model Number"
-                                            />
-                                        </Box>
-                                    )}
-                                </Field>
                                 <Field name="stockNumber">
                                     {({ input }) => (
                                         <Box>
@@ -210,42 +152,7 @@ const AddTruckDialog: React.FC<TruckDialogProps> = ({
                                     )}
                                 </Field>
                             </Box>
-                            <Box mt={3}>
-                                <Typography variant="h6" gutterBottom>Truck Accessories Needed</Typography>
-                                <Grid container spacing={2}>
-                                    {checklists.map((checklistItem) => (
-                                        <Grid item xs={12} key={checklistItem.question}>
-                                            <FormControl component="fieldset">
-                                                <FormLabel component="legend" style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
-                                                    {checklistItem.question}
-                                                </FormLabel>
-                                                <Field name={`checklist_${toSlugFormat(checklistItem.question)}`} type="radio">
-                                                    {({ input }) => (
-                                                        <div>
-                                                            {checklistItem.options.map(option => {
-                                                                const isValueMatching = values[`checklist_${toSlugFormat(checklistItem.question)}`] === option;
-                                                                return (
-                                                                    <label key={option}>
-                                                                        <input
-                                                                            type="radio"
-                                                                            name={input.name}
-                                                                            value={option}
-                                                                            checked={isValueMatching}
-                                                                            onChange={input.onChange}
-                                                                        />
-                                                                        {option}
-                                                                    </label>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    )}
-                                                </Field>
 
-                                            </FormControl>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </Box>
                             <DialogActions>
                                 {!isViewMode && <Button
                                     style={{

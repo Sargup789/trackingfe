@@ -1,10 +1,11 @@
 import { OrderData } from "@/pages";
 import { HighlightOff } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormLabel, Grid, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Field, Form } from "react-final-form";
 import { DropdownMaster } from "../types";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Checklist } from "../types";
 
 interface UserDialogProps {
     open: boolean;
@@ -22,8 +23,18 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
 }) => {
     const isEditMode = Object.keys(orderDialogData).length > 0;
     const [dropdowns, setDropdowns] = useState<DropdownMaster[]>([]);
+    const [checklists, setChecklists] = useState<Checklist[]>([]);
+
+    const toSlugFormat = (str: string) => {
+        return str.toLowerCase().replace(/\s+/g, '-');
+    };
 
     const customOnSubmit = (values: any) => {
+        values.checklist = checklists.map((item) => ({
+            question: item.question,
+            answer: values[`checklist_${toSlugFormat(item.question)}`],
+            isActive: item.isActive
+        }));
         values.dropdownData = dropdowns.map((dropdown) => ({
             dropdownId: dropdown.id,
             dropdownName: dropdown.dropdownName,
@@ -37,6 +48,24 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
         return response.data;
     };
 
+    const getAllChecklists = async () => {
+        const response = await axios.get(`/api/router?path=api/checklist`);
+        return response.data;
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const checklistData = await getAllChecklists();
+                setChecklists(checklistData);
+            } catch (error) {
+                console.error("Failed to fetch data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,11 +78,25 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
         fetchData();
     }, []);
 
+    const transformOrderDataForForm = (orderData: OrderData | {}) => {
+        if (Object.keys(orderData).length === 0) return {}
+        const transformedData: any = { ...orderData };
+        if ((orderData as OrderData).checklist) {
+            (orderData as OrderData).checklist.forEach(item => {
+                if (item && item.question) {
+                    const slug = toSlugFormat(item.question);
+                    transformedData[`checklist_${slug}`] = item.answer;
+                }
+            });
+        }
+        return transformedData;
+    };
+
     const territoryManagerValues = dropdowns.find((dropdown: DropdownMaster) => dropdown.dropdownName === 'territoryManager')
     const managerValues = dropdowns.find((dropdown: DropdownMaster) => dropdown.dropdownName === 'manager')
 
     return (
-        <Dialog maxWidth="sm" fullWidth open={open} onClose={handleClose}>
+        <Dialog maxWidth="lg" fullWidth open={open} onClose={handleClose}>
             <DialogTitle
                 sx={{
                     display: "flex",
@@ -78,7 +121,9 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
             </DialogTitle>
             <DialogContent>
                 <Form
-                    initialValues={orderDialogData}
+                    initialValues={{
+                        ...transformOrderDataForForm(orderDialogData)
+                    }}
                     onSubmit={customOnSubmit}
                     render={({ handleSubmit, values }) => (
                         <form onSubmit={handleSubmit}>
@@ -130,6 +175,19 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                                         </Box>
                                     )}
                                 </Field>
+                                <Field name="modelNumber">
+                                    {({ input }) => (
+                                        <Box>
+                                            <Typography className="label">Model Number</Typography>
+                                            <TextField
+                                                {...input}
+                                                fullWidth
+                                                size="small"
+                                                placeholder="Model Number"
+                                            />
+                                        </Box>
+                                    )}
+                                </Field>
                                 <Field name="deliveryLocation">
                                     {({ input }) => (
                                         <Box>
@@ -171,6 +229,41 @@ const AddOrderDialog: React.FC<UserDialogProps> = ({
                                         </Box>
                                     )}
                                 </Field>
+                            </Box>
+                            <Box mt={3}>
+                                <Typography variant="h6" gutterBottom>Truck Accessories Needed</Typography>
+                                <Grid container spacing={2}>
+                                    {checklists.map((checklistItem) => (
+                                        <Grid item xs={12} key={checklistItem.question}>
+                                            <FormControl component="fieldset">
+                                                <FormLabel component="legend" style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+                                                    {checklistItem.question}
+                                                </FormLabel>
+                                                <Field name={`checklist_${toSlugFormat(checklistItem.question)}`} type="radio">
+                                                    {({ input }) => (
+                                                        <div>
+                                                            {checklistItem.options.map(option => {
+                                                                const isValueMatching = values[`checklist_${toSlugFormat(checklistItem.question)}`] === option;
+                                                                return (
+                                                                    <label key={option}>
+                                                                        <input
+                                                                            type="radio"
+                                                                            name={input.name}
+                                                                            value={option}
+                                                                            checked={isValueMatching}
+                                                                            onChange={input.onChange}
+                                                                        />
+                                                                        {option}
+                                                                    </label>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
+                                                </Field>
+                                            </FormControl>
+                                        </Grid>
+                                    ))}
+                                </Grid>
                             </Box>
                             <DialogActions>
                                 {!isViewMode && <Button

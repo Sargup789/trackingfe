@@ -5,6 +5,7 @@ import { UseQueryResult, useQuery } from "react-query";
 import { useState } from "react";
 import withLogin from "@/components/general/withLogin";
 import React from "react";
+import { ChecklistItemData } from "./trucks";
 
 export interface FiltersState {
   orderId: null | string,
@@ -19,6 +20,8 @@ export interface OrderData {
   customerName: string;
   territoryManager: string;
   deliveryLocation: string;
+  modelNumber: string;
+  checklist: ChecklistItemData[];
   manager: string;
   numberOfTrucks: number;
 }

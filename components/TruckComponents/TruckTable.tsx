@@ -46,6 +46,7 @@ export default function Truck({
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ fontWeight: 'bold' }}>Quote Number</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold' }}>Company Name</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Truck Number</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Vehicle Model</TableCell>
                             <TableCell align="center" sx={{ fontWeight: 'bold' }}>Serial Number</TableCell>
@@ -68,6 +69,7 @@ export default function Truck({
                             return (
                                 <TableRow key={row.id}>
                                     <TableCell>{row.orderId}</TableCell>
+                                    <TableCell align='center'>{row.customerName}</TableCell>
                                     <TableCell align='center'>{row.vin}</TableCell>
                                     <TableCell align='center'>{row.modelNumber}</TableCell>
                                     <TableCell align='center'>{row.serialNumber}</TableCell>
