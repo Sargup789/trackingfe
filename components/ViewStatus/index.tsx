@@ -5,10 +5,15 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import ClearIcon from '@mui/icons-material/Clear';
 
+type orderDetails = {
+    modelNumber: string
+    orderId: string
+}
+
 const ViewStatus: React.FC = () => {
 
     const [companyName, setCompanyName] = useState('');
-    const [quoteNumbers, setQuoteNumbers] = useState<string[]>([]);
+    const [quoteNumbers, setQuoteNumbers] = useState<orderDetails[]>([]);
     const [selectedQuoteNumber, setSelectedQuoteNumber] = useState("");
     const [truckDetails, setTruckDetails] = useState<TruckData[]>([]);
 
@@ -18,6 +23,7 @@ const ViewStatus: React.FC = () => {
             toast.success("Company order details");
             // Assuming the API response is an array of quote numbers
             if (Array.isArray(response.data) && response.data.length > 0) {
+                // const orderIds = response.data?.[0].map((item: any) => item.orderId);
                 setQuoteNumbers(response.data?.[0]);
             }
         } catch (error) {
@@ -62,7 +68,7 @@ const ViewStatus: React.FC = () => {
         } else {
             return `${truck.status}`;
         }
-    };     
+    };
 
     return (
         <Box sx={{ padding: 3, backgroundColor: 'white', borderRadius: 2 }}>
@@ -105,8 +111,8 @@ const ViewStatus: React.FC = () => {
             >
                 <MenuItem value="">Select Quote Number</MenuItem>
                 {quoteNumbers?.map((quoteNumber) => (
-                    <MenuItem key={quoteNumber} value={quoteNumber}>
-                        {quoteNumber}
+                    <MenuItem key={quoteNumber?.orderId} value={quoteNumber?.orderId}>
+                        {quoteNumber?.orderId + (quoteNumber?.modelNumber ? " - " + quoteNumber?.modelNumber : "")}
                     </MenuItem>
                 ))}
             </Select>
