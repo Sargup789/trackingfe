@@ -50,15 +50,27 @@ const ViewStatus: React.FC = () => {
     };
 
     const displayCheckListTable = (item: ChecklistItemData[]) => {
-        return item?.map((singleItem) => singleItem.answer === 'yes' && <div className='flex flex-col'><p>{singleItem.question} - {singleItem.status === "DELIVERED"
-            ? 'ITEM RECEIVED'
-            : singleItem.status === "AWAITING DELIVERY"
-                ? "WORK ORDER GENERATED"
-                : singleItem.status
-                    ? " PO GENERATED"
-                    : "N/A"
-        } - ETA: {singleItem.leadTime || "N/A"}</p></div>)
+        return item?.map((singleItem) => {
+            if (singleItem.answer === 'yes') {
+                return (
+                    <div className='flex flex-col'>
+                        <p>
+                            {singleItem.question} - {singleItem.status === "DELIVERED"
+                                ? 'ITEM RECEIVED'
+                                : singleItem.status === "AWAITING DELIVERY"
+                                    ? "WORK ORDER GENERATED"
+                                    : singleItem.status
+                                        ? " PO GENERATED"
+                                        : "N/A"}
+                            {singleItem.status !== "DELIVERED" && singleItem.leadTime && <> - ETA: {singleItem.leadTime}</>}
+                        </p>
+                    </div>
+                );
+            }
+            return null; // Return null for items where answer is not 'yes'
+        });
     }
+
 
     const getStatusWithLeadTime = (truck: TruckData) => {
         // Check if the status is present in the leadTime object
