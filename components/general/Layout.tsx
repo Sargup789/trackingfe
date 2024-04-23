@@ -12,6 +12,7 @@ import PageviewOutlinedIcon from '@mui/icons-material/PageviewOutlined';
 import LogoutButton from './withLogout';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
+import withLogin, { DecodedToken } from '@/components/general/withLogin';
 
 type Props = { children: ReactNode }
 
@@ -77,7 +78,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, roles }: Props & DecodedToken) => {
   const [open, setOpen] = React.useState(true);
   const router = useRouter()
 
@@ -88,6 +89,14 @@ const Layout = ({ children }: Props) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const visibleDrawerItemsForManager =
+    drawerItems.filter(item => item.name !== 'Users' && item.name !== 'Dropdown Master' && item.name !== 'Checklist')
+
+  const visibleDrawerItemsForOperator = drawerItems.filter(item => item.name !== 'Users' && item.name !== 'Dropdown Master' && item.name !== 'Checklist' && item.name !== 'Orders' && item.name !== "Vendor Sourcing" && item.name !== "Trucks" && item.name !== "Status Update")
+
+  const drawerItemsToShowBasedOnRole = roles === 'editor' ? visibleDrawerItemsForManager : roles === 'viewer' ? visibleDrawerItemsForOperator : drawerItems
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -142,7 +151,7 @@ const Layout = ({ children }: Props) => {
         </DrawerHeader>
         <Divider />
         <List>
-          {drawerItems.map((item, index) => (
+          {drawerItemsToShowBasedOnRole.map((item, index) => (
             <ListItem key={item.name} disablePadding onClick={() => router.push(item.path)}>
               <ListItemButton>
                 <ListItemIcon>
@@ -182,4 +191,4 @@ const Layout = ({ children }: Props) => {
   )
 }
 
-export default Layout
+export default withLogin(Layout)
