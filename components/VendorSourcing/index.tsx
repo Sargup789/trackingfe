@@ -79,7 +79,7 @@ const VendorSourcing: React.FC = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                {Object.keys(truckDetails.checklist[0]).map((key) => {
+                                {truckDetails?.checklist?.[0] && Object.keys(truckDetails.checklist[0]).map((key) => {
                                     if (key !== 'answer' && key !== 'isActive') {
                                         return <TableCell key={key} style={{ fontWeight: 'bold' }}>{headerMappings[key] || key}</TableCell>;
                                     }
