@@ -27,7 +27,7 @@ const drawerItems = [
   { name: 'Checklist', path: '/checklist' },
 ]
 
-const drawerWidth = 240;
+const drawerWidth = 275;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -177,11 +177,22 @@ const Layout = ({ children, roles }: Props & DecodedToken) => {
             </ListItem>
           ))}
         </List>
-        {/* <img
-          src={"/images/truck-img.png"}
-          alt="Logo"
-          style={{ width: '80%', height: '35px', marginRight: '10px', marginLeft: '10px', position: 'absolute', bottom: 5 }}
-        /> */}
+        <Typography
+          noWrap
+          component="div"
+          sx={{
+            // width: '80%',
+            margin: '0',
+            marginLeft: '5px',
+            position: 'absolute',
+            bottom: '20px',
+            textAlign: 'start',
+            fontWeight: 'bold', // Makes the text bold
+          }}
+        >
+          Powered By: GB Tech Inc<br />
+          Helpline: support@gbtechinc.com
+        </Typography>
       </Drawer>
       <Main open={open} sx={{ backgroundColor: '#a9a8a9', height: '100vh' }}>
         <DrawerHeader />
